@@ -7,6 +7,7 @@
 /Plugins/**/Intermediate/*
 /.vscode
 /.vs
+.vsconfig
 
 # compiled stuff we probably don't want
 *.lib
