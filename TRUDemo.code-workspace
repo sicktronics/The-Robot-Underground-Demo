@@ -1,0 +1,574 @@
+{
+	"folders": [
+		{
+			"name": "TRUDemo",
+			"path": "."
+		},
+		{
+			"name": "UE5",
+			"path": "/Users/Shared/Epic Games/UE_5.4"
+		}
+	],
+	"settings": {
+		"typescript.tsc.autoDetect": "off",
+		"npm.autoDetect": "off"
+	},
+	"extensions": {
+		"recommendations": [
+			"ms-vscode.cpptools",
+			"ms-dotnettools.csharp"
+		]
+	},
+	"tasks": {
+		"version": "2.0.0",
+		"tasks": [
+			{
+				"label": "TRUDemo Mac Debug Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TRUDemo",
+					"Mac",
+					"Debug",
+					"/Users/parker/Desktop/UnrealGen/TRUDemo/TRUDemo.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TRUDemo Mac Debug Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TRUDemo",
+					"Mac",
+					"Debug",
+					"/Users/parker/Desktop/UnrealGen/TRUDemo/TRUDemo.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"TRUDemo Mac Debug Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TRUDemo Mac Debug Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TRUDemo",
+					"Mac",
+					"Debug",
+					"/Users/parker/Desktop/UnrealGen/TRUDemo/TRUDemo.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TRUDemo Mac DebugGame Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TRUDemo",
+					"Mac",
+					"DebugGame",
+					"/Users/parker/Desktop/UnrealGen/TRUDemo/TRUDemo.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TRUDemo Mac DebugGame Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TRUDemo",
+					"Mac",
+					"DebugGame",
+					"/Users/parker/Desktop/UnrealGen/TRUDemo/TRUDemo.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"TRUDemo Mac DebugGame Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TRUDemo Mac DebugGame Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TRUDemo",
+					"Mac",
+					"DebugGame",
+					"/Users/parker/Desktop/UnrealGen/TRUDemo/TRUDemo.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TRUDemo Mac Development Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TRUDemo",
+					"Mac",
+					"Development",
+					"/Users/parker/Desktop/UnrealGen/TRUDemo/TRUDemo.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TRUDemo Mac Development Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TRUDemo",
+					"Mac",
+					"Development",
+					"/Users/parker/Desktop/UnrealGen/TRUDemo/TRUDemo.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"TRUDemo Mac Development Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TRUDemo Mac Development Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TRUDemo",
+					"Mac",
+					"Development",
+					"/Users/parker/Desktop/UnrealGen/TRUDemo/TRUDemo.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TRUDemo Mac Test Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TRUDemo",
+					"Mac",
+					"Test",
+					"/Users/parker/Desktop/UnrealGen/TRUDemo/TRUDemo.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TRUDemo Mac Test Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TRUDemo",
+					"Mac",
+					"Test",
+					"/Users/parker/Desktop/UnrealGen/TRUDemo/TRUDemo.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"TRUDemo Mac Test Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TRUDemo Mac Test Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TRUDemo",
+					"Mac",
+					"Test",
+					"/Users/parker/Desktop/UnrealGen/TRUDemo/TRUDemo.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TRUDemo Mac Shipping Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TRUDemo",
+					"Mac",
+					"Shipping",
+					"/Users/parker/Desktop/UnrealGen/TRUDemo/TRUDemo.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TRUDemo Mac Shipping Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TRUDemo",
+					"Mac",
+					"Shipping",
+					"/Users/parker/Desktop/UnrealGen/TRUDemo/TRUDemo.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"TRUDemo Mac Shipping Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TRUDemo Mac Shipping Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TRUDemo",
+					"Mac",
+					"Shipping",
+					"/Users/parker/Desktop/UnrealGen/TRUDemo/TRUDemo.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TRUDemoEditor Mac Debug Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TRUDemoEditor",
+					"Mac",
+					"Debug",
+					"/Users/parker/Desktop/UnrealGen/TRUDemo/TRUDemo.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TRUDemoEditor Mac Debug Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TRUDemoEditor",
+					"Mac",
+					"Debug",
+					"/Users/parker/Desktop/UnrealGen/TRUDemo/TRUDemo.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"TRUDemoEditor Mac Debug Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TRUDemoEditor Mac Debug Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TRUDemoEditor",
+					"Mac",
+					"Debug",
+					"/Users/parker/Desktop/UnrealGen/TRUDemo/TRUDemo.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TRUDemoEditor Mac DebugGame Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TRUDemoEditor",
+					"Mac",
+					"DebugGame",
+					"/Users/parker/Desktop/UnrealGen/TRUDemo/TRUDemo.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TRUDemoEditor Mac DebugGame Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TRUDemoEditor",
+					"Mac",
+					"DebugGame",
+					"/Users/parker/Desktop/UnrealGen/TRUDemo/TRUDemo.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"TRUDemoEditor Mac DebugGame Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TRUDemoEditor Mac DebugGame Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TRUDemoEditor",
+					"Mac",
+					"DebugGame",
+					"/Users/parker/Desktop/UnrealGen/TRUDemo/TRUDemo.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TRUDemoEditor Mac Development Build",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TRUDemoEditor",
+					"Mac",
+					"Development",
+					"/Users/parker/Desktop/UnrealGen/TRUDemo/TRUDemo.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TRUDemoEditor Mac Development Rebuild",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TRUDemoEditor",
+					"Mac",
+					"Development",
+					"/Users/parker/Desktop/UnrealGen/TRUDemo/TRUDemo.uproject",
+					"-waitmutex"
+				],
+				"problemMatcher": "$msCompile",
+				"dependsOn": [
+					"TRUDemoEditor Mac Development Clean"
+				],
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			},
+			{
+				"label": "TRUDemoEditor Mac Development Clean",
+				"group": "build",
+				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"args": [
+					"TRUDemoEditor",
+					"Mac",
+					"Development",
+					"/Users/parker/Desktop/UnrealGen/TRUDemo/TRUDemo.uproject",
+					"-waitmutex",
+					"-clean"
+				],
+				"problemMatcher": "$msCompile",
+				"type": "shell",
+				"options": {
+					"cwd": "/Users/Shared/Epic Games/UE_5.4"
+				}
+			}
+		]
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"name": "Launch TRUDemo (Debug)",
+				"request": "launch",
+				"program": "/Users/parker/Desktop/UnrealGen/TRUDemo/Binaries/Mac/UnrealGame-Mac-Debug.app/Contents/MacOS/UnrealGame-Mac-Debug",
+				"preLaunchTask": "TRUDemo Mac Debug Build",
+				"args": [
+				],
+				"cwd": "/Users/Shared/Epic Games/UE_5.4",
+				"type": "lldb"
+			},
+			{
+				"name": "Launch TRUDemo (DebugGame)",
+				"request": "launch",
+				"program": "/Users/parker/Desktop/UnrealGen/TRUDemo/Binaries/Mac/UnrealGame-Mac-DebugGame.app/Contents/MacOS/UnrealGame-Mac-DebugGame",
+				"preLaunchTask": "TRUDemo Mac DebugGame Build",
+				"args": [
+				],
+				"cwd": "/Users/Shared/Epic Games/UE_5.4",
+				"type": "lldb"
+			},
+			{
+				"name": "Launch TRUDemo (Development)",
+				"request": "launch",
+				"program": "/Users/parker/Desktop/UnrealGen/TRUDemo/Binaries/Mac/UnrealGame.app/Contents/MacOS/UnrealGame",
+				"preLaunchTask": "TRUDemo Mac Development Build",
+				"args": [
+				],
+				"cwd": "/Users/Shared/Epic Games/UE_5.4",
+				"type": "lldb"
+			},
+			{
+				"name": "Launch TRUDemo (Test)",
+				"request": "launch",
+				"program": "/Users/parker/Desktop/UnrealGen/TRUDemo/Binaries/Mac/UnrealGame-Mac-Test.app/Contents/MacOS/UnrealGame-Mac-Test",
+				"preLaunchTask": "TRUDemo Mac Test Build",
+				"args": [
+				],
+				"cwd": "/Users/Shared/Epic Games/UE_5.4",
+				"type": "lldb"
+			},
+			{
+				"name": "Launch TRUDemo (Shipping)",
+				"request": "launch",
+				"program": "/Users/parker/Desktop/UnrealGen/TRUDemo/Binaries/Mac/UnrealGame-Mac-Shipping.app/Contents/MacOS/UnrealGame-Mac-Shipping",
+				"preLaunchTask": "TRUDemo Mac Shipping Build",
+				"args": [
+				],
+				"cwd": "/Users/Shared/Epic Games/UE_5.4",
+				"type": "lldb"
+			},
+			{
+				"name": "Launch TRUDemoEditor (Debug)",
+				"request": "launch",
+				"program": "/Users/Shared/Epic Games/UE_5.4/Engine/Binaries/Mac/UnrealEditor-Mac-Debug.app/Contents/MacOS/UnrealEditor-Mac-Debug",
+				"preLaunchTask": "TRUDemoEditor Mac Debug Build",
+				"args": [
+					"/Users/parker/Desktop/UnrealGen/TRUDemo/TRUDemo.uproject"
+				],
+				"cwd": "/Users/Shared/Epic Games/UE_5.4",
+				"type": "lldb"
+			},
+			{
+				"name": "Launch TRUDemoEditor (DebugGame)",
+				"request": "launch",
+				"program": "/Users/Shared/Epic Games/UE_5.4/Engine/Binaries/Mac/UnrealEditor-Mac-DebugGame.app/Contents/MacOS/UnrealEditor-Mac-DebugGame",
+				"preLaunchTask": "TRUDemoEditor Mac DebugGame Build",
+				"args": [
+					"/Users/parker/Desktop/UnrealGen/TRUDemo/TRUDemo.uproject"
+				],
+				"cwd": "/Users/Shared/Epic Games/UE_5.4",
+				"type": "lldb"
+			},
+			{
+				"name": "Launch TRUDemoEditor (Development)",
+				"request": "launch",
+				"program": "/Users/Shared/Epic Games/UE_5.4/Engine/Binaries/Mac/UnrealEditor.app/Contents/MacOS/UnrealEditor",
+				"preLaunchTask": "TRUDemoEditor Mac Development Build",
+				"args": [
+					"/Users/parker/Desktop/UnrealGen/TRUDemo/TRUDemo.uproject"
+				],
+				"cwd": "/Users/Shared/Epic Games/UE_5.4",
+				"type": "lldb"
+			},
+			{
+				"name": "Generate Project Files",
+				"type": "coreclr",
+				"request": "launch",
+				"preLaunchTask": "UnrealBuildTool Mac Development Build",
+				"program": "/Users/Shared/Epic Games/UE_5.4/Engine/Build/BatchFiles/RunUBT.bat",
+				"args": [
+					"-projectfiles",
+					"-vscode",
+					"-project=/Users/parker/Desktop/UnrealGen/TRUDemo/TRUDemo.uproject",
+					"-game",
+					"-engine",
+					"-dotnet"
+				],
+				"console": "internalConsole",
+				"internalConsoleOptions": "openOnSessionStart",
+				"stopAtEntry": false,
+				"cwd": "/Users/Shared/Epic Games/UE_5.4"
+			}
+		]
+	}
+}
