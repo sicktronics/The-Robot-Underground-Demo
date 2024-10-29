@@ -1,5 +1,49 @@
+# intermediate and per-user folders
 /Saved
-/Content
 /DerivedDataCache
-/.vscode
 /Intermediate
+/Debug
+/Binaries
+/Plugins/**/Intermediate/*
+/.vscode
+/.vs
+
+# compiled stuff we probably don't want
+*.lib
+*.dll
+*.lai
+*.la
+*.a
+*.exe
+*.out
+*.app
+*.ipa
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Unreal-generated files
+*.xcodeproj
+*.xcworkspace
+*.sln
+*.suo
+*.opensdf
+*.sdf
+*.VC.db
+*.VC.opendb
+
+# OS/platform generated files
+
+# Windows
+ehthumbs.db
+Thumbs.db
+
+# Mac OS X
+.DS_Store
+.DS_Store?
+.AppleDouble
+.LSOverride
+._*
