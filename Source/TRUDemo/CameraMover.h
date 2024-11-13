@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CameraPosition.h"
-
+#include "Functions.h"
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "CameraMover.generated.h"
