@@ -17,14 +17,14 @@ public:
 	AWireable();
 
 	UFUNCTION(BlueprintPure)
-	UPin* getPin(int i) const;
+	APin* getPin(int i) const;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere)
-	TArray<UPin*> pins;
+	TArray<APin*> pins;
 
 public:	
 	// Called every frame

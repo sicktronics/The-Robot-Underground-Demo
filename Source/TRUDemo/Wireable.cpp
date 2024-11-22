@@ -19,13 +19,12 @@ void AWireable::BeginPlay()
 }
 
 // Called every frame
-void AWireable::Tick(float DeltaTime)
-{
+void AWireable::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
 
 }
 
-UPin* AWireable::getPin(int i) const {
+APin* AWireable::getPin(int i) const {
 	if (i < 0 || i >= pins.Num()) { return nullptr; }
 	return pins[i];
 }

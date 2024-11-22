@@ -52,9 +52,6 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	TArray<AWireable*> wireables;
-	
-	UPROPERTY(VisibleAnywhere)
-	TArray<AWire*> wires;
 
 	UPROPERTY(VisibleAnywhere)
 	AWire* currWire;

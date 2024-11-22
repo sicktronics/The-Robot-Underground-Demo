@@ -3,20 +3,23 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/ActorComponent.h"
+#include "GameFramework/Actor.h"
 #include "Pin.generated.h"
 
 
 UENUM()
-enum class PinType { MALE, FEMALE, MALE_SCREW, FORK };
+enum class PinType { MALE, FEMALE, FORK };
 
 UCLASS(Abstract, ClassGroup=(Custom), meta = (BlueprintSpawnableComponent))
-class TRUDEMO_API UPin : public UActorComponent {
+class TRUDEMO_API APin : public AActor {
 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
-	UPin();
+	APin();
+
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintPure)
 	bool isTaken() const { return taken; }
@@ -26,7 +29,7 @@ public:
 
 	UFUNCTION(BlueprintPure)
 	virtual bool requiresScrew() {
-		PURE_VIRTUAL(UPin::requiresScrew, );
+		PURE_VIRTUAL(APin::requiresScrew, );
 
 		// happy compiler
 		return false;
@@ -34,7 +37,7 @@ public:
 
 	UFUNCTION(BlueprintPure)
 	virtual PinType getType() {
-		PURE_VIRTUAL(UPin::getType, );
+		PURE_VIRTUAL(APin::getType, );
 		
 		// happy compiler
 		return PinType::MALE;
@@ -46,20 +49,49 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	bool taken;
-
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-		
+	
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* pinMesh = nullptr;
 };
 
 // Pin that accepts male wires
 UCLASS(ClassGroup = (Custom), meta=(BlueprintSpawnableComponent))
-class TRUDEMO_API UMalePin : public UPin {
+class TRUDEMO_API AMalePin : public APin {
+	GENERATED_BODY()
+
+public:
+	AMalePin();
+
+	virtual bool requiresScrew() override { return false; }
+	virtual PinType getType() override { return PinType::MALE; }
+};
+
+// Pin that accepts male wires and requires screwing in
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
+class TRUDEMO_API AMalePinScrew : public APin {
+	GENERATED_BODY()
+
+public:
+	virtual bool requiresScrew() override { return true; }
+	virtual PinType getType() override { return PinType::MALE; }
+};
+
+// Pin that accepts female wires
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
+class TRUDEMO_API AFemalePin : public APin {
 	GENERATED_BODY()
 
 public:
 	virtual bool requiresScrew() override { return false; }
-	virtual PinType getType() override { return PinType::MALE; }
+	virtual PinType getType() override { return PinType::FEMALE; }
+};
+
+// Pin that accepts fork wires
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
+class TRUDEMO_API AForkPin : public APin {
+	GENERATED_BODY()
+
+public:
+	virtual bool requiresScrew() override { return true; }
+	virtual PinType getType() override { return PinType::FORK; }
 };

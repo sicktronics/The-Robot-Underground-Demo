@@ -22,8 +22,7 @@ UCameraMover::UCameraMover()
 
 
 // Called when the game starts
-void UCameraMover::BeginPlay()
-{
+void UCameraMover::BeginPlay() {
 	Super::BeginPlay();
 	MoveToStateLocation(startPos);
 	// ...	
@@ -39,13 +38,13 @@ void UCameraMover::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 }
 
 void UCameraMover::CycleAdjStateLocation(FString inputKey) {
+	UCameraPosition* cameraPos = GetComponentByClass<UCameraPosition>(currentPos);
 
-
-	if (IsValid(GetComponentByClass<UCameraPosition>(currentPos)))
+	if (IsValid(cameraPos))
 	{
-		if (GetComponentByClass<UCameraPosition>(currentPos)->connectionsList.Contains(inputKey))
+		if (cameraPos->connectionsList.Contains(inputKey))
 		{
-			UCameraPosition* loc = *GetComponentByClass<UCameraPosition>(currentPos)->connectionsList.Find(inputKey);
+			UCameraPosition* loc = *cameraPos->connectionsList.Find(inputKey);
 			
 			self->SetActorLocation(loc->GetOwner()->GetActorLocation());
 			self->SetActorRotation(loc->GetOwner()->GetActorRotation());
@@ -62,14 +61,14 @@ void UCameraMover::CycleAdjStateLocation(FString inputKey) {
 }
 
 void UCameraMover::MoveToStateLocation(AActor* loc) {
-	if (IsValid(loc))
-	{
+	if (IsValid(loc)) {
+		
 		self->SetActorLocation(loc->GetActorLocation());
 		self->SetActorRotation(loc->GetActorRotation());
 
 		currentPos = loc;
-	} else
-	{
+	}
+	else {
 		UE_LOG(LogTemp, Warning, TEXT("state location does not exist"));
 	}
 	
