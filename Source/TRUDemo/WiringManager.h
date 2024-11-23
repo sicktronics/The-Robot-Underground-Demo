@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/PlayerState.h"
+#include "GameFramework/Actor.h"
 #include "Wireable.h"
 #include "Wire.h"
 
@@ -39,11 +39,14 @@ enum class WiringState : uint8 {
  * Manages the wiring state and stuff. Should really only have one instance in the world at a time.
  */
 UCLASS()
-class TRUDEMO_API AWiringManager : public APlayerState {
+class TRUDEMO_API AWiringManager : public AActor {
 	GENERATED_BODY()
 
 public:
 	AWiringManager();
+
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
 
 	
 protected:
@@ -55,4 +58,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	AWire* currWire;
+
+	// Called when the game starts
+	virtual void BeginPlay() override;
 };
