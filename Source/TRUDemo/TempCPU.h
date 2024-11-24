@@ -22,8 +22,10 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Core")
 	FString retString;
 
-	UPROPERTY(VisibleAnywhere, Category = "Runtime Connection List")
+	UPROPERTY(EditAnywhere, Category = "Runtime Connection List")
 	TArray<FString> pins;
+
+	
 
 protected:
 	// Called when the game starts
@@ -36,4 +38,5 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void LoadPinData();	
 	void SplitPinData();
+	int GetPinData(int pinNum, int loc);
 };

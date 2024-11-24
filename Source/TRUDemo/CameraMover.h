@@ -42,7 +42,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void CycleAdjStateLocation(FString inputKey);
 	void MoveToStateLocation(AActor* loc);
-
+	UFUNCTION(BlueprintCallable)
+	FString GetCurrentLocationLabel();
 	// UFUNCTION(BlueprintCallable)
 	// void SetPlayerController(AActor* pc);
 		
