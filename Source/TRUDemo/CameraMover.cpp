@@ -3,13 +3,6 @@
 
 #include "CameraMover.h"
 
-template<class T>
-static T* GetComponentByClass(AActor* Actor)
-{
-	// Checks whether actor is valid before trying to get component
-	return Actor ? Cast<T>(Actor->GetComponentByClass(T::StaticClass())) : nullptr;
-}
-
 // Sets default values for this component's properties
 UCameraMover::UCameraMover()
 {
@@ -40,23 +33,24 @@ void UCameraMover::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 void UCameraMover::CycleAdjStateLocation(FString inputKey) {
 	UCameraPosition* cameraPos = GetComponentByClass<UCameraPosition>(currentPos);
 
-	if (IsValid(cameraPos))
+	UFunctions::Log("Blorp");
+	if (IsValid(UFunctions::GetComponentByClass<UCameraPosition>(currentPos)))
 	{
-		if (cameraPos->connectionsList.Contains(inputKey))
+		if (UFunctions::GetComponentByClass<UCameraPosition>(currentPos)->connectionsList.Contains(inputKey))
 		{
-			UCameraPosition* loc = *cameraPos->connectionsList.Find(inputKey);
+			UCameraPosition* loc = *(UFunctions::GetComponentByClass<UCameraPosition>(currentPos)->connectionsList.Find(inputKey));
 			
 			self->SetActorLocation(loc->GetOwner()->GetActorLocation());
 			self->SetActorRotation(loc->GetOwner()->GetActorRotation());
 
 			currentPos = loc->GetOwner();
 		} else {
-			UE_LOG(LogTemp, Warning, TEXT("input key not found in cameraPosition %s connections list"), *(GetComponentByClass<UCameraPosition>(currentPos)->stateLabel));
+			UFunctions::Log("input key not found in cameraPosition %s connections list", *(UFunctions::GetComponentByClass<UCameraPosition>(currentPos)->stateLabel));
+			UE_LOG(LogTemp, Warning, TEXT("input key not found in cameraPosition %s connections list"), *(UFunctions::GetComponentByClass<UCameraPosition>(currentPos)->stateLabel));
 		}
-		
 	} 
 	else {
-		UE_LOG(LogTemp, Warning, TEXT("Camera Position Component not found"));
+		UFunctions::Log("Camera Position Component not found");
 	}
 }
 
