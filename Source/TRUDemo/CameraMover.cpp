@@ -31,7 +31,7 @@ void UCameraMover::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 }
 
 void UCameraMover::CycleAdjStateLocation(FString inputKey) {
-	UCameraPosition* cameraPos = GetComponentByClass<UCameraPosition>(currentPos);
+	UCameraPosition* cameraPos = UFunctions::GetComponentByClass<UCameraPosition>(currentPos);
 
 	UFunctions::Log("Blorp");
 	if (IsValid(UFunctions::GetComponentByClass<UCameraPosition>(currentPos)))
