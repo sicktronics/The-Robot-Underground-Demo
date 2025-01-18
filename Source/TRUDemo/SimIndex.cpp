@@ -25,3 +25,13 @@ void ASimIndex::Tick(float DeltaTime)
 
 }
 
+void ASimIndex::CompileAndRun()
+{
+	// AVRRunner *runner = new AVRRunner("hi");
+	// bool test = isTwoWordInstruction(10);
+}
+
+void ASimIndex::ExecuteProgram()
+{
+	
+}
