@@ -11,11 +11,7 @@
 	],
 	"settings": {
 		"typescript.tsc.autoDetect": "off",
-		"npm.autoDetect": "off",
-		"files.associations": {
-			"regex": "cpp",
-			"sstream": "cpp"
-		}
+		"npm.autoDetect": "off"
 	},
 	"extensions": {
 		"recommendations": [
