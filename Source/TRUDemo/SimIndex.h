@@ -3,16 +3,18 @@
 #pragma once
 
 THIRD_PARTY_INCLUDES_START
-#include "../../Plugins/LEDBlinkTest1/Source/ThirdParty/LEDBlinkTest1Library/src/CPU/CPU.h"
-#include "../../Plugins/LEDBlinkTest1/Source/ThirdParty/LEDBlinkTest1Library/src/CPU/interrupt.h"
-#include "../../Plugins/LEDBlinkTest1/Source/ThirdParty/LEDBlinkTest1Library/src/CPU/instruction.h"
-#include "../../Plugins/LEDBlinkTest1/Source/ThirdParty/LEDBlinkTest1Library/src/glueCode/compile.h"
-#include "../../Plugins/LEDBlinkTest1/Source/ThirdParty/LEDBlinkTest1Library/src/glueCode/execute.h"
-#include "../../Plugins/LEDBlinkTest1/Source/ThirdParty/LEDBlinkTest1Library/src/glueCode/intelHex.h"
-#include "../../Plugins/LEDBlinkTest1/Source/ThirdParty/LEDBlinkTest1Library/src/peripherals/GPIO.h"
-#include "../../Plugins/LEDBlinkTest1/Source/ThirdParty/LEDBlinkTest1Library/src/peripherals/GPIO.h"
+// #include "../../Plugins/LEDBlinkTest1/Source/ThirdParty/src/CPU/CPU.h"
+// #include "../../Plugins/LEDBlinkTest1/Source/ThirdParty/src/CPU/interrupt.h"
+// #include "../../Plugins/LEDBlinkTest1/Source/ThirdParty/src/CPU/instruction.h"
+// #include "../../Plugins/LEDBlinkTest1/Source/ThirdParty/src/glueCode/compile.h"
+#include "../../Plugins/LEDBlinkTest1/Source/ThirdParty/src/glueCode/execute.h"
+#include "../../Plugins/LEDBlinkTest1/Source/ThirdParty/src/glueCode/index.h"
+// #include "../../Plugins/LEDBlinkTest1/Source/ThirdParty/src/glueCode/intelHex.h"
+// #include "../../Plugins/LEDBlinkTest1/Source/ThirdParty/src/peripherals/GPIO.h"
+// #include "../../Plugins/LEDBlinkTest1/Source/ThirdParty/src/peripherals/GPIO.h"
 THIRD_PARTY_INCLUDES_END
 
+#include "Async/Async.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "SimIndex.generated.h"
@@ -33,13 +35,5 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	/*** Simulation support functions VVV ***/
-
-	UFUNCTION(BlueprintCallable)
-	void CompileAndRun();
-
-	UFUNCTION(BlueprintCallable)
-	void ExecuteProgram();
 
 };

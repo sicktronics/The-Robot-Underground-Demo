@@ -15,6 +15,10 @@ ASimIndex::ASimIndex()
 void ASimIndex::BeginPlay()
 {
 	Super::BeginPlay();
+
+
+
+	// UE_LOG(LogTemp, Warning, TEXT("okee dokke, the async task should be firing"));
 	
 }
 
@@ -23,15 +27,4 @@ void ASimIndex::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-}
-
-void ASimIndex::CompileAndRun()
-{
-	// AVRRunner *runner = new AVRRunner("hi");
-	// bool test = isTwoWordInstruction(10);
-}
-
-void ASimIndex::ExecuteProgram()
-{
-	
 }

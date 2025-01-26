@@ -20,6 +20,10 @@
 			"TargetAllowList": [
 				"Editor"
 			]
+		},
+		{
+			"Name": "LEDBlinkTest1",
+			"Enabled": true
 		}
 	]
 }
