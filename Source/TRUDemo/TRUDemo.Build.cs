@@ -21,7 +21,7 @@ public class TRUDemo : ModuleRules
 
 		// To include OnlineSubsystemSteam, add it to the plugins section in your uproject file with the Enabled attribute set to true
 
-		PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "..", "..", "Plugins", "LEDBlinkTest1", "Source", "ThirdParty", "build", "libLEDBlinkTest1.a"));
+		PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "..", "..", "Plugins", "LEDBlinkTest1", "Source", "ThirdParty", "build", "Debug", "LEDBlinkTest1.lib"));
 		
 	}
 }
