@@ -5,22 +5,22 @@
 #include "Functions.h"
 #include "BaseLevel.h"
 #include "CoreMinimal.h"
-#include "Components/ActorComponent.h"
+#include "GameFramework/Actor.h"
 #include "LevelLoader.generated.h"
 
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class TRUDEMO_API ULevelLoader : public UActorComponent
+class TRUDEMO_API ALevelLoader : public AActor
 {
 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
-	ULevelLoader();
+	ALevelLoader();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Core")
-	TSubclassOf<class AActor>  MyClassType;
+	TSubclassOf<class AActor>  Level;
 
 protected:
 	// Called when the game starts
@@ -28,10 +28,14 @@ protected:
 
 public:	
 	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable)
-	TSubclassOf<class AActor> GetLevel();
+	TSubclassOf<class AActor> GetLevelToLoad();
 	UFUNCTION(BlueprintCallable)
 	UBaseLevel* GetBaseLevelComponent(AActor* obj);	
+
+
+
+	
 };

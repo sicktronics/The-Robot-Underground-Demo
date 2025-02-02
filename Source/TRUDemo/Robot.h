@@ -24,9 +24,15 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Core Data")
 	AActor* CPUObj;
 	UPROPERTY(EditAnywhere, Category = "Core Data")
-	int drivebasePinNum = 1;
-	UPROPERTY(VisibleAnywhere, Category = "Derived Data")
-	float sigSpeedMult;
+	float robotWidth = 1;
+	UPROPERTY(EditAnywhere, Category = "Pin Numbers")
+	int driveLeftPinNum = 1;
+	UPROPERTY(EditAnywhere, Category = "Pin Numbers")
+	int driveRightPinNum = 2;
+	UPROPERTY(VisibleAnywhere, Category = "Moter Speeds")
+	float driveLeftMult;
+	UPROPERTY(VisibleAnywhere, Category = "Moter Speeds")
+	float driveRightMult;
 	UPROPERTY(VisibleAnywhere, Category = "Derived Data")
 	AActor* self;
 	UPROPERTY(VisibleAnywhere, Category = "Derived Data")

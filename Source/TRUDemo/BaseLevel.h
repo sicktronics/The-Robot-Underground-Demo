@@ -16,7 +16,7 @@ public:
 	// Sets default values for this component's properties
 	UBaseLevel();
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	ULevelLoader* levelLoader;
+	ALevelLoader* levelLoader;
 
 protected:
 	// Called when the game starts
@@ -30,7 +30,7 @@ public:
 	// Here we can put any functionality that we want to be true for all levels
 	// stuff like tracking level progress and such 
 	UFUNCTION(BlueprintCallable)
-	void SetLevelLoader(ULevelLoader* l);
+	void SetLevelLoader(ALevelLoader* l);
 	UFUNCTION(BlueprintCallable)
-	ULevelLoader* GetLevelLoader();
+	ALevelLoader* GetLevelLoader();
 };

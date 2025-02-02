@@ -5,18 +5,18 @@
 
 
 // Sets default values for this component's properties
-ULevelLoader::ULevelLoader()
+ALevelLoader::ALevelLoader()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = true;
 
 	// ...
 }
 
 
 // Called when the game starts
-void ULevelLoader::BeginPlay()
+void ALevelLoader::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -26,20 +26,20 @@ void ULevelLoader::BeginPlay()
 
 
 // Called every frame
-void ULevelLoader::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void ALevelLoader::Tick(float DeltaTime)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	Super::Tick(DeltaTime);
 
 	// ...
 }
 
 // This function takes in the stage and level ids and loads the assosiated level blueprint into the scene
-TSubclassOf<class AActor> ULevelLoader::GetLevel()
+TSubclassOf<class AActor> ALevelLoader::GetLevelToLoad()
 {
-	return MyClassType;
+	return Level;
 }
 
-UBaseLevel* ULevelLoader::GetBaseLevelComponent(AActor* obj)
+UBaseLevel* ALevelLoader::GetBaseLevelComponent(AActor* obj)
 {
 	return UFunctions::GetComponentByClass<UBaseLevel>(obj);
 }	

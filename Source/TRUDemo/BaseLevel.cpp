@@ -31,12 +31,12 @@ void UBaseLevel::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompo
 	// ...
 }
 
-void UBaseLevel::SetLevelLoader(ULevelLoader* l)
+void UBaseLevel::SetLevelLoader(ALevelLoader* l)
 {
 	levelLoader = l;
 }
 
-ULevelLoader* UBaseLevel::GetLevelLoader()
+ALevelLoader* UBaseLevel::GetLevelLoader()
 {
 	if (levelLoader != nullptr)
 	{
