@@ -23,7 +23,7 @@ public:
 	AActor* self;
 	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Values")
 	// int playState = 0;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Values")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Values")
 	AActor* currentPos = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Values")
 	AActor* startPos = nullptr;
