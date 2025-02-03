@@ -9,6 +9,8 @@ void ALEDBlinkTest1GameModeBase::BeginPlay()
 	Super::BeginPlay();
 	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Let the games begin"));
 
+    // TSharedPtr<FSimRunnableThread> SimRunnable = MakeShared<FSimRunnableThread>(10);
+
     // Spawn SimIndex and get reference
     // ASimIndex* MySimIndex = (ASimIndex*) GetWorld()->SpawnActor(ASimIndex::StaticClass());
 

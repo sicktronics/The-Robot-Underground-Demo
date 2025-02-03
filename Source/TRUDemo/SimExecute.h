@@ -3,7 +3,8 @@
 #pragma once
 
 // #include "Async/Async.h"
-#include "SimIndex.h"
+// #include "SimIndex.h"
+#include "LEDBlinkTest.h"
 #include "LED13Actor.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
@@ -28,6 +29,9 @@ class TRUDEMO_API ASimExecute : public AActor
 	GENERATED_BODY()
 	
 public:	
+
+	// UPROPERTY()
+	// FLEDBlinkTestModule Mod;
 
 	UPROPERTY(BlueprintReadWrite)
 	bool oldLED13Value; // Old value of LED 13

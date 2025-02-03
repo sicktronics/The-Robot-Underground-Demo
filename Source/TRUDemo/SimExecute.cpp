@@ -1,5 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
+#include "LEDBlinkTest.h"
+#include "Tasks/Task.h"
 #include "Kismet/GameplayStatics.h"
 #include "SimExecute.h"
 
@@ -29,13 +30,31 @@ void ASimExecute::BeginPlay()
 {
 	Super::BeginPlay();
 
-	AsyncTask(ENamedThreads::AnyBackgroundThreadNormalTask, [this]
-	{
-		// Simulation kicked off using the below function VVV
-		compileAndRun();
-
-	});
+	// AsyncTask(ENamedThreads::AnyHiPriThread, [this]
+	// {
+	// 	// Simulation kicked off using the below function VVV
+	// 	compileAndRun();
+	// 	// Updated to call the compileAndRun() function via the FLEDBlinkTest module
+	// 	// if(FLEDBlinkTestModule::IsAvailable()){
+	// 	// 	UE_LOG(LogTemp, Warning, TEXT("LEDBlinkTestModule is available!"));
+	// 	// 	// FLEDBlinkTestModule::Get();
+	// 	// 	FLEDBlinkTestModule::compileAndRunLEDBlinkTest();
+	// 	// 	// if(FLEDBlinkTestModule::Get()){
+	// 	// 	// 	UE_LOG(LogTemp, Warning, TEXT("Got a reference!"));
+	// 	// 	// }
+	// 	// }
+	// });
 	
+	UE::Tasks::Launch(
+		UE_SOURCE_LOCATION,
+		[]{ 
+			UE_LOG(LogTemp, Log, TEXT("Hello Tasks!")); 
+			if(FLEDBlinkTestModule::IsAvailable()){
+				UE_LOG(LogTemp, Warning, TEXT("LEDBlinkTestModule is available!"));
+				FLEDBlinkTestModule::compileAndRunLEDBlinkTest();
+			}
+		});
+
 	// Find all actors of class MyBlueprintActor (replace with your Blueprint's class name)
 	if(BPLED13Actor){
 		TArray<AActor*> FoundActors;
@@ -67,29 +86,36 @@ void ASimExecute::Tick(float DeltaTime)
 // Called every physics tick
 void ASimExecute::AsyncPhysicsTickActor(float DeltaTime, float SimTime)
 {
-	Super::AsyncPhysicsTickActor(DeltaTime, SimTime);
-	ReceiveAsyncPhysicsTick(DeltaTime, SimTime);
+    Super::AsyncPhysicsTickActor(DeltaTime, SimTime);
+    ReceiveAsyncPhysicsTick(DeltaTime, SimTime);
 
-		if(runner != nullptr && simBeginTicking == true) {
-			oldLED13Value = newLED13Value;
-			newLED13Value = led13;
-			if(newLED13Value != oldLED13Value){
-				UE_LOG(LogTemp, Warning, TEXT("LED 13 State has changed"));
-				// Check for valid LED Ref - then pass it the bool
-				if(LED13Ref) {
-					if (LEDFunction)
-					{
-						// Set your desired boolean value
-						Param.IsON = newLED13Value; 
+    if (FLEDBlinkTestModule::isSimulationTicking())
+    {
+        // oldLED13Value = newLED13Value;
+        // newLED13Value = FLEDBlinkTestModule::getLED13();
 
-						// If the function takes parameters, create a struct matching the parameter layout
-						LED13Ref->ProcessEvent(LEDFunction, &Param);
-					}
-				}
-			}
-			// UE_LOG(LogTemp, Warning, TEXT("LED 13 State: %d"), led13);
+		UE_LOG(LogTemp, Warning, TEXT("LED 13: %d"), FLEDBlinkTestModule::getLED13());
 
-		}
-	// }
+        // if (newLED13Value != oldLED13Value)
+        // {
+        //     UE_LOG(LogTemp, Warning, TEXT("LED 13 State has changed"));
+
+        //     // Ensure LED13Ref exists before calling ProcessEvent
+        //     if (LED13Ref && LEDFunction)
+        //     {
+        //         Param.IsON = newLED13Value;
+
+        //         // Move ProcessEvent to the Game Thread
+        //         AsyncTask(ENamedThreads::GameThread, [this]()
+        //         {
+        //             if (LED13Ref && LEDFunction)
+        //             {
+        //                 LED13Ref->ProcessEvent(LEDFunction, &Param);
+        //             }
+        //         });
+        //     }
+        // }
+    }
 }
+
 

@@ -4,6 +4,7 @@
 #include "SimIndex.h"
 #include "SimExecute.h"
 #include "LED13Actor.h"
+#include "SimRunnableThread.h"
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "LEDBlinkTest1GameModeBase.generated.h"

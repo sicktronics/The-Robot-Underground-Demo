@@ -9,9 +9,9 @@ public class TRUDemo : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "LEDBlinkTest" });
 
-		PrivateDependencyModuleNames.AddRange(new string[] {  });
+		PrivateDependencyModuleNames.AddRange(new string[] { "LEDBlinkTest" });
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
@@ -21,7 +21,9 @@ public class TRUDemo : ModuleRules
 
 		// To include OnlineSubsystemSteam, add it to the plugins section in your uproject file with the Enabled attribute set to true
 
-		PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "..", "..", "Plugins", "LEDBlinkTest1", "Source", "ThirdParty", "build", "Debug", "LEDBlinkTest1.lib"));
+		// PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "..", "..", "Plugins", "LEDBlinkTest", "Source", "ThirdParty", "Win64LEDBlinkTest1", "lib", "build", "Win64ReleaseLEDBlinkTest1.lib"));
+
+		// PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "..", "..", "Plugins", "LEDBlinkTest", "Source", "ThirdParty", "Win64LEDBlinkTest1", "lib", "build" "Win64LEDBlinkTest1.lib"));
 		
 	}
 }
