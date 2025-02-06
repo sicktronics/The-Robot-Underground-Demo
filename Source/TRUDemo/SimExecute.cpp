@@ -18,6 +18,8 @@ ASimExecute::ASimExecute()
 	oldLED13Value = 0;
 	newLED13Value = 0;
 	LED13Ref = nullptr;
+	maxCycleCount = 1000000;
+	cycleCounter = 0;
 }
 
 // void ASimExecute::ReceiveLED13Actor(ALED13Actor* Ref) {
@@ -48,7 +50,7 @@ void ASimExecute::BeginPlay()
 	UE::Tasks::Launch(
 		UE_SOURCE_LOCATION,
 		[]{ 
-			UE_LOG(LogTemp, Log, TEXT("Hello Tasks!")); 
+			// UE_LOG(LogTemp, Log, TEXT("Hello Tasks!")); 
 			if(FLEDBlinkTestModule::IsAvailable()){
 				UE_LOG(LogTemp, Warning, TEXT("LEDBlinkTestModule is available!"));
 				FLEDBlinkTestModule::compileAndRunLEDBlinkTest();
@@ -83,6 +85,7 @@ void ASimExecute::Tick(float DeltaTime)
 
 }
 
+
 // Called every physics tick
 void ASimExecute::AsyncPhysicsTickActor(float DeltaTime, float SimTime)
 {
@@ -91,30 +94,35 @@ void ASimExecute::AsyncPhysicsTickActor(float DeltaTime, float SimTime)
 
     if (FLEDBlinkTestModule::isSimulationTicking())
     {
-        // oldLED13Value = newLED13Value;
-        // newLED13Value = FLEDBlinkTestModule::getLED13();
-
-		UE_LOG(LogTemp, Warning, TEXT("LED 13: %d"), FLEDBlinkTestModule::getLED13());
-
-        // if (newLED13Value != oldLED13Value)
+		// AsyncTask(ENamedThreads::AnyHiPriThreadNormalTask, [this]()
         // {
-        //     UE_LOG(LogTemp, Warning, TEXT("LED 13 State has changed"));
+		// Step 1: Run an execution tick
+		// avrInstruction(runner->cpu);
+        // runner->cpu->tick();
 
-        //     // Ensure LED13Ref exists before calling ProcessEvent
-        //     if (LED13Ref && LEDFunction)
-        //     {
-        //         Param.IsON = newLED13Value;
+		// });
 
-        //         // Move ProcessEvent to the Game Thread
-        //         AsyncTask(ENamedThreads::GameThread, [this]()
-        //         {
-        //             if (LED13Ref && LEDFunction)
-        //             {
-        //                 LED13Ref->ProcessEvent(LEDFunction, &Param);
-        //             }
-        //         });
-        //     }
-        // }
+		// Step 2: Check for updated pin values
+        oldLED13Value = newLED13Value;
+        newLED13Value = FLEDBlinkTestModule::getLED13();
+
+        if (newLED13Value != oldLED13Value)
+        {
+            // UE_LOG(LogTemp, Warning, TEXT("LED 13 State has changed"));
+            // Ensure LED13Ref exists before calling ProcessEvent
+            if (LED13Ref && LEDFunction)
+            {
+                Param.IsON = newLED13Value;
+                // Move ProcessEvent to the Game Thread
+                AsyncTask(ENamedThreads::GameThread, [this]()
+                {
+                    if (LED13Ref && LEDFunction)
+                    {
+                        LED13Ref->ProcessEvent(LEDFunction, &Param);
+                    }
+                });
+            }
+        }
     }
 }
 

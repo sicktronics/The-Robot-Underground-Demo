@@ -30,8 +30,11 @@ class TRUDEMO_API ASimExecute : public AActor
 	
 public:	
 
-	// UPROPERTY()
-	// FLEDBlinkTestModule Mod;
+	UPROPERTY()
+	int cycleCounter;
+
+	UPROPERTY()
+	int maxCycleCount;
 
 	UPROPERTY(BlueprintReadWrite)
 	bool oldLED13Value; // Old value of LED 13
@@ -69,6 +72,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	// UFUNCTION()
-	// void ReceiveLED13Actor(ALED13Actor* Ref);
+	// void simTick();
 
 };

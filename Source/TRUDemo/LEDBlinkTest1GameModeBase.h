@@ -7,6 +7,8 @@
 #include "SimRunnableThread.h"
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "Engine/World.h"
+#include "Kismet/GameplayStatics.h"
 #include "LEDBlinkTest1GameModeBase.generated.h"
 
 /**
