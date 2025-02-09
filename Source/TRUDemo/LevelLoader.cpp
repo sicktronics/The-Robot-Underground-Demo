@@ -36,7 +36,7 @@ void ALevelLoader::Tick(float DeltaTime)
 // This function takes in the stage and level ids and loads the assosiated level blueprint into the scene
 TSubclassOf<class AActor> ALevelLoader::GetLevelToLoad()
 {
-	return Level;
+	return onStartupLevel;
 }
 
 UBaseLevel* ALevelLoader::GetBaseLevelComponent(AActor* obj)

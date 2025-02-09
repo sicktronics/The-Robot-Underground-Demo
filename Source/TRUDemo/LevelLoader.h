@@ -20,7 +20,8 @@ public:
 	ALevelLoader();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Core")
-	TSubclassOf<class AActor>  Level;
+	TSubclassOf<class AActor> onStartupLevel;
+	
 
 protected:
 	// Called when the game starts
