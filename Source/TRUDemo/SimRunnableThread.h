@@ -1,6 +1,11 @@
 #pragma once
 
 #include "LEDBlinkTest.h"
+#include "LED13Actor.h"
+#include "CoreMinimal.h"
+#include "GameFramework/Actor.h"
+#include "Kismet/GameplayStatics.h"
+#include "GenericPlatform/GenericPlatformProcess.h"
 #include "HAL/Runnable.h"
 
 
@@ -9,24 +14,15 @@ class FSimRunnableThread : public FRunnable
 {
 public:
 	// Custom constructor for setting up our thread with its target
-	FSimRunnableThread(int32 InTargetCount);
-	virtual ~FSimRunnableThread();
+	FSimRunnableThread();
+	// virtual ~FSimRunnableThread();
 
 	// FRunnable functions
+	virtual bool Init() override;
 	virtual uint32 Run() override;
 	virtual void Stop() override;
 	virtual void Exit() override;
-	// FRunnable
 
-	// FBUIOnCompleteSignature OnCompleteDelegate;
-
-protected:
 	FRunnableThread* Thread = nullptr;
-
-	TArray<int32> ProcessedNumbers;
-
-	int32 TargetCount = -1;
-	int32 FoundCount = -1;
-
-	bool bStopThread = false;
+	bool bShutdown = false;
 };

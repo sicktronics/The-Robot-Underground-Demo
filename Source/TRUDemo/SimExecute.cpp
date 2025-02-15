@@ -32,30 +32,7 @@ void ASimExecute::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// AsyncTask(ENamedThreads::AnyHiPriThread, [this]
-	// {
-	// 	// Simulation kicked off using the below function VVV
-	// 	compileAndRun();
-	// 	// Updated to call the compileAndRun() function via the FLEDBlinkTest module
-	// 	// if(FLEDBlinkTestModule::IsAvailable()){
-	// 	// 	UE_LOG(LogTemp, Warning, TEXT("LEDBlinkTestModule is available!"));
-	// 	// 	// FLEDBlinkTestModule::Get();
-	// 	// 	FLEDBlinkTestModule::compileAndRunLEDBlinkTest();
-	// 	// 	// if(FLEDBlinkTestModule::Get()){
-	// 	// 	// 	UE_LOG(LogTemp, Warning, TEXT("Got a reference!"));
-	// 	// 	// }
-	// 	// }
-	// });
 	
-	UE::Tasks::Launch(
-		UE_SOURCE_LOCATION,
-		[]{ 
-			// UE_LOG(LogTemp, Log, TEXT("Hello Tasks!")); 
-			if(FLEDBlinkTestModule::IsAvailable()){
-				UE_LOG(LogTemp, Warning, TEXT("LEDBlinkTestModule is available!"));
-				FLEDBlinkTestModule::compileAndRunLEDBlinkTest();
-			}
-		});
 
 	// Find all actors of class MyBlueprintActor (replace with your Blueprint's class name)
 	if(BPLED13Actor){
@@ -76,6 +53,22 @@ void ASimExecute::BeginPlay()
             	Param;
 		}
 	}
+	
+
+	// AsyncTask(ENamedThreads::AnyHiPriThread, [this]
+	// {
+	// 	// Simulation kicked off using the below function VVV
+	// 	compileAndRun();
+	// 	// Updated to call the compileAndRun() function via the FLEDBlinkTest module
+	// 	// if(FLEDBlinkTestModule::IsAvailable()){
+	// 	// 	UE_LOG(LogTemp, Warning, TEXT("LEDBlinkTestModule is available!"));
+	// 	// 	// FLEDBlinkTestModule::Get();
+	// 	// 	FLEDBlinkTestModule::compileAndRunLEDBlinkTest();
+	// 	// 	// if(FLEDBlinkTestModule::Get()){
+	// 	// 	// 	UE_LOG(LogTemp, Warning, TEXT("Got a reference!"));
+	// 	// 	// }
+	// 	// }
+	// });
 }
 
 // Called every frame
@@ -102,13 +95,16 @@ void ASimExecute::AsyncPhysicsTickActor(float DeltaTime, float SimTime)
 
 		// });
 
+		// UE_LOG(LogTemp, Warning, TEXT("%d"), runner->cpu->cycles);
+
 		// Step 2: Check for updated pin values
         oldLED13Value = newLED13Value;
         newLED13Value = FLEDBlinkTestModule::getLED13();
 
         if (newLED13Value != oldLED13Value)
         {
-            // UE_LOG(LogTemp, Warning, TEXT("LED 13 State has changed"));
+            UE_LOG(LogTemp, Warning, TEXT("LED 13 State has changed"));
+			UE_LOG(LogTemp, Warning, TEXT("%d"), runner->cpu->cycles);
             // Ensure LED13Ref exists before calling ProcessEvent
             if (LED13Ref && LEDFunction)
             {
@@ -126,4 +122,20 @@ void ASimExecute::AsyncPhysicsTickActor(float DeltaTime, float SimTime)
     }
 }
 
+void ASimExecute::startSim(){
 
+	SimThread = new FSimRunnableThread();
+
+
+
+}
+
+void ASimExecute::stopSim(){
+	if(SimThread != nullptr){
+		SimThread->Thread->Kill();
+	}
+	
+	// UE_LOG(LogTemp, Warning, TEXT("Destroying..."));
+	// // runner->~AVRRunner();
+	// FLEDBlinkTestModule::stopSimInternal();
+}

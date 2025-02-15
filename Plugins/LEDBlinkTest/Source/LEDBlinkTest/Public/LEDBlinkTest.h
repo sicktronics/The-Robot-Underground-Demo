@@ -43,6 +43,10 @@ public:
 		}
 		return false;
 	}
+	static inline void stopSimInternal(){
+		simBeginTicking = false;
+		// runner->~AVRRunner();
+	}
 
 	// UFUNCTION()
 	// bool getLED13();

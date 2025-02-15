@@ -4,6 +4,8 @@
 
 // #include "Async/Async.h"
 // #include "SimIndex.h"
+#include "SimRunnableThread.h"
+#include "HAL/Runnable.h"
 #include "LEDBlinkTest.h"
 #include "LED13Actor.h"
 #include "CoreMinimal.h"
@@ -45,6 +47,9 @@ public:
 	UPROPERTY()
 	AActor* LED13Ref;
 
+	// UPROPERTY() So...Now a UPROPERTY?
+	FSimRunnableThread* SimThread = nullptr;
+
 	UPROPERTY()
 	UFunction* LEDFunction;
 
@@ -71,7 +76,10 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// UFUNCTION()
-	// void simTick();
+	UFUNCTION(BlueprintCallable)
+	void startSim();
+
+	UFUNCTION(BlueprintCallable)
+	void stopSim();
 
 };
