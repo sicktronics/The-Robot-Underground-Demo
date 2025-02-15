@@ -131,8 +131,22 @@ void ASimExecute::startSim(){
 }
 
 void ASimExecute::stopSim(){
+
 	if(SimThread != nullptr){
 		SimThread->Thread->Kill();
+	}
+	// Ensure LED13Ref exists before calling ProcessEvent
+	if (LED13Ref && LEDFunction)
+	{
+		Param.IsON = false;
+		// Move ProcessEvent to the Game Thread
+		AsyncTask(ENamedThreads::GameThread, [this]()
+		{
+			if (LED13Ref && LEDFunction)
+			{
+				LED13Ref->ProcessEvent(LEDFunction, &Param);
+			}
+		});
 	}
 	
 	// UE_LOG(LogTemp, Warning, TEXT("Destroying..."));

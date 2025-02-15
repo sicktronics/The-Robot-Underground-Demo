@@ -6,11 +6,11 @@
 // Called when the game starts
 void ALEDBlinkTest1GameModeBase::BeginPlay()
 {
-    UGameViewportClient* GameViewport =  GetWorld()->GetGameViewport();
-	GameViewport->ViewModeIndex = 2;
-
 	Super::BeginPlay();
 	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Let the games begin"));
+
+    UGameViewportClient* GameViewport =  GetWorld()->GetGameViewport();
+	GameViewport->ViewModeIndex = 2;
 
     // TSharedPtr<FSimRunnableThread> SimRunnable = MakeShared<FSimRunnableThread>(10);
 
