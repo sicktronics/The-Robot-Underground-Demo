@@ -31,7 +31,7 @@ void UReadWriteSample::WriteToFile(FString filepath, FString content, FString& i
     TArray<FString> Commands = cleanInput(content);
     //PrintStringArray(Commands);
     ParseFunction(Commands, FunctionDict, VarStack);
-    //PrintFunctionDict(FunctionDict);
+    PrintFunctionDict(FunctionDict);
     PrintVarArray(VarStack);
     TArray<FString> packageResult, signalResult, packageBits, signalBits;
     packageBits.SetNum(Pins);
@@ -210,54 +210,14 @@ TArray<FString> UReadWriteSample::cleanInput(const FString& Input) {
     return Commands;
 }
 
-void UReadWriteSample::PrintStringArray(const TArray<FString>& StringArray)
-{
-    UE_LOG(LogTemp, Log, TEXT("Printing String Array:"));
-
-    for (const FString& Item : StringArray)
-    {
-        UE_LOG(LogTemp, Log, TEXT("%s"), *Item);
-    }
-}
-
-void UReadWriteSample::PrintFunctionDict(const TMap<FString, TArray<FString>>& FunctionDict) {
-    for (const TPair<FString, TArray<FString>>& Pair : FunctionDict)
-    {
-        FString Values = FString::Join(Pair.Value, TEXT(", "));
-        UE_LOG(LogTemp, Log, TEXT("Key: %s, Values: [%s]"), *Pair.Key, *Values);
-    }
-}
-
-void UReadWriteSample::PrintVarArray(const TArray<TArray<FString>>& VarArray)
-{
-    // Check if the array is empty
-    if (VarArray.IsEmpty())
-    {
-        UE_LOG(LogTemp, Warning, TEXT("VarArray is empty!"));
-        return;
-    }
-
-    // Iterate through each row
-    for (int32 RowIndex = 0; RowIndex < VarArray.Num(); RowIndex++)
-    {
-        // Join the row into a single string for easy logging
-        FString RowData = FString::Join(VarArray[RowIndex], TEXT(", "));
-        UE_LOG(LogTemp, Log, TEXT("Row %d: [%s]"), RowIndex, *RowData);
-    }
-}
-
-
-
 void UReadWriteSample::PinMode(const TArray<FString>& Para, TArray<int32>& pinActive, TArray<TArray<FString>>& VarStack) {
     if (Para.Num() > 2) {
         return;
     }
     if (!Para[0].IsNumeric()) {
-        for (int i = VarStack.Num()-1; i >= 0; i--) {
-            if (VarStack[i][1].Equals(Para[0])) {
-                pinActive[FCString::Atoi(*VarStack[i][2].TrimStartAndEnd()) - 1] = 1;
-                break;
-            }
+        FString VarValue = GetVar(Para[0], VarStack);
+        if (!VarValue.IsEmpty()) {
+            pinActive[FCString::Atoi(*VarValue.TrimStartAndEnd()) - 1] = 1;
         }
     }
     if (Para[0].IsNumeric() && Para[1].Equals("OUTPUT", ESearchCase::IgnoreCase)) {
@@ -270,12 +230,10 @@ void UReadWriteSample::AnalogWrite(const TArray<FString>& Para, TArray<int32>& p
         return;
     }
     if (!Para[0].IsNumeric()) {
-        for (int i = VarStack.Num() - 1; i >= 0; i--) {
-            if (VarStack[i][1].Equals(Para[0])) {
-                pinSpeed[FCString::Atoi(*VarStack[i][2].TrimStartAndEnd()) - 1] = 
-                    FCString::Atoi(*Para[1].TrimStartAndEnd());
-                break;
-            }
+        FString VarValue = GetVar(Para[0], VarStack);
+        if (!VarValue.IsEmpty()) {
+            pinSpeed[FCString::Atoi(*VarValue.TrimStartAndEnd()) - 1] =
+                FCString::Atoi(*Para[1].TrimStartAndEnd());
         }
     }
 
@@ -291,15 +249,14 @@ void UReadWriteSample::DigitalWrite(const TArray<FString>& Para, TArray<int32>& 
         return;
     }
     if (!Para[0].IsNumeric()) {
-        for (int i = VarStack.Num() - 1; i >= 0; i--) {
-            if (VarStack[i][1].Equals(Para[0])) {
-                if (Para[1].Contains(TEXT("high"), ESearchCase::IgnoreCase)) {
-                    pinStatus[FCString::Atoi(*VarStack[i][2].TrimStartAndEnd()) - 1] = 1;
-                } else 
-                if (Para[1].Contains(TEXT("low"), ESearchCase::IgnoreCase)) {
-                    pinStatus[FCString::Atoi(*VarStack[i][2].TrimStartAndEnd()) - 1] = 0;
-                }
-                break;
+        FString VarValue = GetVar(Para[0],VarStack);
+        if (!VarValue.IsEmpty()) {
+            if (Para[1].Contains(TEXT("high"), ESearchCase::IgnoreCase)) {
+                pinStatus[FCString::Atoi(*VarValue.TrimStartAndEnd()) - 1] = 1;
+            }
+            else
+            if (Para[1].Contains(TEXT("low"), ESearchCase::IgnoreCase)) {
+                pinStatus[FCString::Atoi(*VarValue.TrimStartAndEnd()) - 1] = 0;
             }
         }
     }
@@ -327,11 +284,9 @@ void UReadWriteSample::Delay(const TArray<FString>& Para,TArray<FString>& Packag
     }
     int32 IntParameter = 0 ;
     if (!Para[0].IsNumeric()) {
-        for (int i = VarStack.Num() - 1; i >= 0; i--) {
-            if (VarStack[i][1].Equals(Para[0])) {
-                IntParameter = FCString::Atoi(*VarStack[i][2].TrimStartAndEnd());
-                break;
-            }
+        FString VarValue = GetVar(Para[0], VarStack);
+        if (!VarValue.IsEmpty()) {
+            IntParameter = FCString::Atoi(*VarValue.TrimStartAndEnd());
         }
     }
     else {
@@ -413,25 +368,7 @@ void UReadWriteSample::ParseFunction(const TArray<FString>& Command, TMap<FStrin
 
 }
 
-// Command format : Declaration Name  = Value;
-void UReadWriteSample::PushVar(const FString& Command, TArray<TArray<FString>>& VarStack) {
-    TArray<FString> ParametersArray;
-    Command.ParseIntoArray(ParametersArray, TEXT("="), true);
-    FString assign = ParametersArray[0].TrimStartAndEnd();
-    FString val = ParametersArray[1].TrimStartAndEnd();
-    assign.ParseIntoArray(ParametersArray, TEXT(" "), true);
-    val = val.Replace(TEXT(";"), TEXT("")).TrimStartAndEnd();
-    VarStack.Add({ ParametersArray[0], ParametersArray[1], val });
-}
 
-
-// Number of Var to pop
-void UReadWriteSample::PopVar(int& VarCount, TArray<TArray<FString>>& VarStack) {
-    for (int i = 0; i < VarCount; i++) {
-        VarStack.RemoveAt(VarStack.Num() - 1);
-    }   
-
-}
 
 void UReadWriteSample::CallFunction(const FString& FunctionNameIn, TMap<FString, TArray<FString>>& FunctionDict,
     TArray<TArray<FString>>& VarStack, TArray<FString>& Package, TArray<FString>& PackageBits, 
@@ -476,14 +413,25 @@ void UReadWriteSample::CallFunction(const FString& FunctionNameIn, TMap<FString,
                            
                             TArray<FString> VarArray = FunctionDict[FunctionName + TEXT("Var")];
                             int32 VarCount = VarArray.Num();
-                            for (int i = 0 ; i < VarCount; i++) {
-                                PushVar(VarArray[i] + TEXT(" = ") + ParametersArray[i], VarStack);
+                            if (ParametersArray.Num() == VarCount) { //type check for passing correct number of variable into function
+                                for (int i = 0; i < VarCount; i++) {
+                                    if (ParametersArray[i].IsNumeric()) {
+                                        PushVar(VarArray[i] + TEXT(" = ") + ParametersArray[i], VarStack);
+                                    }
+                                    else {
+                                        FString VarValue = GetVar(ParametersArray[i], VarStack);
+                                        PushVar(VarArray[i] + TEXT(" = ") + VarValue, VarStack);
+                                    }
+
+                                }
+                                CallFunction(FunctionName, FunctionDict, VarStack, Package, PackageBits,
+                                    Time, TickCount, PinStatus, Signal, SignalBits, PinSpeed, PinActive);
+
+                                PopVar(VarCount, VarStack);
                             }
-                            CallFunction(FunctionName, FunctionDict,VarStack, Package, PackageBits,
-                                Time, TickCount,PinStatus,Signal,SignalBits,PinSpeed,PinActive);
-
-                            PopVar(VarCount, VarStack);
-
+                            else {
+                                UE_LOG(LogTemp, Log, TEXT("Function variable mismatch or missing : "));
+                            }
                         }
                         else {
                             UE_LOG(LogTemp, Log, TEXT("Function Not Found : %s"), *FunctionName);
@@ -496,4 +444,74 @@ void UReadWriteSample::CallFunction(const FString& FunctionNameIn, TMap<FString,
         }
     }
 
+}
+
+//VarStack related function
+
+// Command format : Declaration Name  = Value;
+void UReadWriteSample::PushVar(const FString& Command, TArray<TArray<FString>>& VarStack) {
+    TArray<FString> ParametersArray;
+    Command.ParseIntoArray(ParametersArray, TEXT("="), true);
+    FString assign = ParametersArray[0].TrimStartAndEnd();
+    FString val = ParametersArray[1].TrimStartAndEnd();
+    assign.ParseIntoArray(ParametersArray, TEXT(" "), true);
+    val = val.Replace(TEXT(";"), TEXT("")).TrimStartAndEnd();
+    VarStack.Add({ ParametersArray[0], ParametersArray[1], val });
+}
+
+// Number of Var to pop
+void UReadWriteSample::PopVar(int& VarCount, TArray<TArray<FString>>& VarStack) {
+    for (int i = 0; i < VarCount; i++) {
+        VarStack.RemoveAt(VarStack.Num() - 1);
+    }
+
+}
+
+//VarName to look for value, return the string if found, or return empty string
+FString UReadWriteSample::GetVar(const FString& VarName, TArray<TArray<FString>>& VarStack) {
+    for (int i = VarStack.Num() - 1; i >= 0; i--) {
+        if (VarStack[i][1].Equals(VarName)) {
+            return VarStack[i][2];
+        }
+    }
+    return "";
+}
+
+
+
+//Print out function
+void UReadWriteSample::PrintStringArray(const TArray<FString>& StringArray)
+{
+    UE_LOG(LogTemp, Log, TEXT("Printing String Array:"));
+
+    for (const FString& Item : StringArray)
+    {
+        UE_LOG(LogTemp, Log, TEXT("%s"), *Item);
+    }
+}
+
+void UReadWriteSample::PrintFunctionDict(const TMap<FString, TArray<FString>>& FunctionDict) {
+    for (const TPair<FString, TArray<FString>>& Pair : FunctionDict)
+    {
+        FString Values = FString::Join(Pair.Value, TEXT(", "));
+        UE_LOG(LogTemp, Log, TEXT("Key: %s, Values: [%s]"), *Pair.Key, *Values);
+    }
+}
+
+void UReadWriteSample::PrintVarArray(const TArray<TArray<FString>>& VarArray)
+{
+    // Check if the array is empty
+    if (VarArray.IsEmpty())
+    {
+        UE_LOG(LogTemp, Warning, TEXT("VarArray is empty!"));
+        return;
+    }
+
+    // Iterate through each row
+    for (int32 RowIndex = 0; RowIndex < VarArray.Num(); RowIndex++)
+    {
+        // Join the row into a single string for easy logging
+        FString RowData = FString::Join(VarArray[RowIndex], TEXT(", "));
+        UE_LOG(LogTemp, Log, TEXT("Row %d: [%s]"), RowIndex, *RowData);
+    }
 }

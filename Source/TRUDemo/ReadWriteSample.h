@@ -62,6 +62,8 @@ class TRUDEMO_API UReadWriteSample : public UBlueprintFunctionLibrary
 			int32& Time, int32& TickCount, TArray<int32>& PinStatus,
 			TArray<FString>& Signal, TArray<FString>& SignalBits, TArray<int32>& PinSpeed, TArray<int32>& PinActive);
 
+		static FString GetVar(const FString& VarName, TArray<TArray<FString>>& VarStack);
+
 	GENERATED_BODY()
 	
 };
