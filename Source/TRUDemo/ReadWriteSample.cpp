@@ -31,8 +31,8 @@ void UReadWriteSample::WriteToFile(FString filepath, FString content, FString& i
     TArray<FString> Commands = cleanInput(content);
     //PrintStringArray(Commands);
     ParseFunction(Commands, FunctionDict, VarStack);
-    PrintFunctionDict(FunctionDict);
-    PrintVarArray(VarStack);
+    //PrintFunctionDict(FunctionDict);
+    //PrintVarArray(VarStack);
     TArray<FString> packageResult, signalResult, packageBits, signalBits;
     packageBits.SetNum(Pins);
     signalBits.SetNum(Pins);
@@ -229,18 +229,26 @@ void UReadWriteSample::AnalogWrite(const TArray<FString>& Para, TArray<int32>& p
     if (Para.Num() > 2) {
         return;
     }
+    FString PinValue, SpeedValue;
+    int32 PinNumber, SpeedNumber;
     if (!Para[0].IsNumeric()) {
-        FString VarValue = GetVar(Para[0], VarStack);
-        if (!VarValue.IsEmpty()) {
-            pinSpeed[FCString::Atoi(*VarValue.TrimStartAndEnd()) - 1] =
-                FCString::Atoi(*Para[1].TrimStartAndEnd());
-        }
+        PinValue = GetVar(Para[0], VarStack);
+        PinNumber = FCString::Atoi(*PinValue.TrimStartAndEnd());
+    }
+    else {
+        PinNumber = FCString::Atoi(*Para[0].TrimStartAndEnd());
     }
 
-    if (Para[0].IsNumeric() && Para[1].IsNumeric()) {
-        pinSpeed[FCString::Atoi(*Para[0].TrimStartAndEnd()) - 1] =
-            FCString::Atoi(*Para[1].TrimStartAndEnd());
+    if (!Para[1].IsNumeric()) {
+        SpeedValue = GetVar(Para[1], VarStack);
+        SpeedNumber = FCString::Atoi(*SpeedValue.TrimStartAndEnd());
     }
+    else {
+        //UE_LOG(LogTemp, Log, TEXT("Speed numberic"));
+        SpeedNumber = FCString::Atoi(*Para[1].TrimStartAndEnd());
+    }
+    //UE_LOG(LogTemp, Log, TEXT("change speed pin : %d to %d"), PinNumber -1, SpeedNumber);
+    pinSpeed[PinNumber-1] = SpeedNumber;
 
 }
 
@@ -391,6 +399,10 @@ void UReadWriteSample::CallFunction(const FString& FunctionNameIn, TMap<FString,
                     // Split the parameters by comma
                     TArray<FString> ParametersArray;
                     ParametersString.ParseIntoArray(ParametersArray, TEXT(","), true);
+                    for (FString& Parameter : ParametersArray)
+                    {
+                        Parameter = Parameter.TrimStartAndEnd();
+                    }
                     if (FunctionName.Equals("pinMode")) {
                         PinMode(ParametersArray, PinActive, VarStack);
                         UE_LOG(LogTemp, Log, TEXT("pinMode Called by %s"), *FunctionNameIn);
@@ -422,7 +434,6 @@ void UReadWriteSample::CallFunction(const FString& FunctionNameIn, TMap<FString,
                                         FString VarValue = GetVar(ParametersArray[i], VarStack);
                                         PushVar(VarArray[i] + TEXT(" = ") + VarValue, VarStack);
                                     }
-
                                 }
                                 CallFunction(FunctionName, FunctionDict, VarStack, Package, PackageBits,
                                     Time, TickCount, PinStatus, Signal, SignalBits, PinSpeed, PinActive);
