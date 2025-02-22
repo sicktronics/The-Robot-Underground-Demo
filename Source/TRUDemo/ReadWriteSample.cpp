@@ -21,14 +21,14 @@ FString UReadWriteSample::ReadFromFile(FString filepath, FString& info) {
     return reading;
 }
 
-void UReadWriteSample::WriteToFile(FString filepath, FString content, FString& info) {
+FString UReadWriteSample::WriteToFile(FString filepath, FString content) {
     FString input = "Orginal Input\n";
     input += content;
-
     //initalize all variable needed
     TMap<FString, TArray<FString>> FunctionDict;
     TArray<TArray<FString>> VarStack;
     TArray<FString> Commands = cleanInput(content);
+    FString complieMessage = "Compile success!";
     //PrintStringArray(Commands);
     ParseFunction(Commands, FunctionDict, VarStack);
     //PrintFunctionDict(FunctionDict);
@@ -44,54 +44,37 @@ void UReadWriteSample::WriteToFile(FString filepath, FString content, FString& i
 
     //start setup here
     CallFunction(TEXT("setup"), FunctionDict, VarStack, packageResult, packageBits,
-        Time, TickCount, pinStatus, signalResult, signalBits, pinSpeed, pinActive);
-
-    //FunctionSelector(Commands, packageResult, signalResult);
-    packageResult.Append(signalResult);
-    FString dPath = FPaths::ProjectDir() + TEXT("package.txt");
-    for (const FString& Line : packageResult) {
-        input += Line + LINE_TERMINATOR;
-    }
-
-    if (FFileHelper::SaveStringToFile(input, *dPath)) {
-        info = FString::Printf(TEXT("Write to %s Done"), *dPath);
-    }
-    else {
-        info = FString::Printf(TEXT("Failed to write to %s"), *dPath);
-        return;
-    }
+        Time, TickCount, pinStatus, signalResult, signalBits, pinSpeed, pinActive, complieMessage);
     input = "";
     for (const FString& Line : signalResult) {
         input += Line + LINE_TERMINATOR;
     }
-    dPath = FPaths::ProjectDir() + TEXT("signal.txt");
+    FString dPath = FPaths::ProjectDir() + TEXT("signal.txt");
     if (FFileHelper::SaveStringToFile(input, *dPath)) {
-        info = FString::Printf(TEXT("Write to %s Done"), *dPath);
-
+        return complieMessage;
     }
     else {
-        info = FString::Printf(TEXT("Failed to write to %s"), *dPath);
-        return;
     }
+    return complieMessage;
 }
 
 void UReadWriteSample::ProgressTick(TArray<FString>& Package, TArray<FString>& PackageBits, int32& Time, int32& TickCount, TArray<int32>& PinStatus,
     TArray<FString>& Signal, TArray<FString>& SignalBits, TArray<int32>& PinSpeed , TArray<int32>& PinActive) {
     if (Time == 0) {//header
-        Package.Add(FString("\nPackage output"));
-        Package.Add(FString("Time frame total = ") + FString::FromInt(MaxTimeframe) + FString(", ms per tick = ")
-            + FString::FromInt(Tick) + FString("ms"));
+        //Package.Add(FString("\nPackage output"));
+        //Package.Add(FString("Time frame total = ") + FString::FromInt(MaxTimeframe) + FString(", ms per tick = ")
+        //    + FString::FromInt(Tick) + FString("ms"));
         Signal.Add(FString("Signal output"));
     }
     while (TickCount < (1000 / Tick)) {  //pad the rest of tick in the time frame
-        for (int i = 0; i < Pins; i++) {
-            if (PinActive[i] == 1) {
-                PackageBits[i] += FString::FromInt(PinStatus[i]);
-            }
-            else {
-                PackageBits[i] += "0";
-            }
-        }
+        //for (int i = 0; i < Pins; i++) {
+        //    if (PinActive[i] == 1) {
+        //        PackageBits[i] += FString::FromInt(PinStatus[i]);
+        //    }
+        //    else {
+        //        PackageBits[i] += "0";
+        //    }
+        //}
         for (int i = 0; i < Pins; i++) {
             for (int j = 0; j < MaxSpeed; j++) {
                 if (PinActive[i] == 1) {
@@ -111,12 +94,12 @@ void UReadWriteSample::ProgressTick(TArray<FString>& Package, TArray<FString>& P
         TickCount += 1;
     }
     //Now write to array
-    Package.Add(FString("**********"));
-    Package.Add(FString("t = ") + FString::FromInt(Time));
-    for (int i = 0; i < Pins; i++) {
-        Package.Add(FString("pin") + FString::FromInt(i + 1) + FString(" : ") + PackageBits[i]);
-        PackageBits[i] = "";
-    }
+    //Package.Add(FString("**********"));
+    //Package.Add(FString("t = ") + FString::FromInt(Time));
+    //for (int i = 0; i < Pins; i++) {
+    //    Package.Add(FString("pin") + FString::FromInt(i + 1) + FString(" : ") + PackageBits[i]);
+    //    PackageBits[i] = "";
+    //}
     Signal.Add(FString("**********"));
     Signal.Add(FString("t = ") + FString::FromInt(Time));
     for (int i = 0; i < Pins; i++) {
@@ -303,14 +286,14 @@ void UReadWriteSample::Delay(const TArray<FString>& Para,TArray<FString>& Packag
 
     UE_LOG(LogTemp, Log, TEXT("delay run by %d , t = %d"), IntParameter, Time);
     while (IntParameter > 0) {
-        for (int i = 0; i < Pins; i++) {
-            if (PinActive[i] == 1) {
-                PackageBits[i] += FString::FromInt(PinStatus[i]);
-            }
-            else {
-                PackageBits[i] += "0";
-            }
-        }
+        //for (int i = 0; i < Pins; i++) {
+        //    if (PinActive[i] == 1) {
+        //        PackageBits[i] += FString::FromInt(PinStatus[i]);
+        //    }
+        //    else {
+        //        PackageBits[i] += "0";
+        //    }
+        //}
         for (int i = 0; i < Pins; i++) {
             for (int j = 0; j < MaxSpeed; j++) {
                 if (PinActive[i] == 1) {
@@ -380,8 +363,8 @@ void UReadWriteSample::ParseFunction(const TArray<FString>& Command, TMap<FStrin
 
 void UReadWriteSample::CallFunction(const FString& FunctionNameIn, TMap<FString, TArray<FString>>& FunctionDict,
     TArray<TArray<FString>>& VarStack, TArray<FString>& Package, TArray<FString>& PackageBits, 
-    int32& Time, int32& TickCount, TArray<int32>& PinStatus,
-    TArray<FString>& Signal, TArray<FString>& SignalBits, TArray<int32>& PinSpeed, TArray<int32>& PinActive){
+    int32& Time, int32& TickCount, TArray<int32>& PinStatus,TArray<FString>& Signal, 
+    TArray<FString>& SignalBits, TArray<int32>& PinSpeed, TArray<int32>& PinActive, FString& compileMessage){
 
     if (FunctionDict.Contains(FunctionNameIn))
     {
@@ -390,6 +373,11 @@ void UReadWriteSample::CallFunction(const FString& FunctionNameIn, TMap<FString,
         for (const FString& Command : FunArray)
         {
             if (Time < MaxTimeframe) {
+                if (Command.Contains(TEXT("="))) {
+                    PushVar(Command, VarStack);
+                }
+                else 
+                {
                 int32 OpenParenIndex, CloseParenIndex;
                 if (Command.FindChar('(', OpenParenIndex) && Command.FindChar(')', CloseParenIndex)) {
                     // Extract the function name and the parameters inside parentheses
@@ -406,51 +394,57 @@ void UReadWriteSample::CallFunction(const FString& FunctionNameIn, TMap<FString,
                     if (FunctionName.Equals("pinMode")) {
                         PinMode(ParametersArray, PinActive, VarStack);
                         UE_LOG(LogTemp, Log, TEXT("pinMode Called by %s"), *FunctionNameIn);
-                    } else
-                    if (FunctionName.Equals("analogWrite")) {
-                        AnalogWrite(ParametersArray, PinSpeed, VarStack);
-                        UE_LOG(LogTemp, Log, TEXT("analogWrite Called by %s"), *FunctionNameIn);
-                    } else
-                    if (FunctionName.Equals("digitalWrite")) {
-                        DigitalWrite(ParametersArray, PinStatus, VarStack);
-                        UE_LOG(LogTemp, Log, TEXT("digitalWrite Called by %s"), *FunctionNameIn);
-                    } else
-                    if (FunctionName.Equals("delay")) {
-                        Delay(ParametersArray,Package, PackageBits, Time, TickCount, 
-                            PinStatus, Signal, SignalBits, PinSpeed, PinActive, VarStack);
-                        UE_LOG(LogTemp, Log, TEXT("delay Called by %s"), *FunctionNameIn);
+                    }
+                    else
+                        if (FunctionName.Equals("analogWrite")) {
+                            AnalogWrite(ParametersArray, PinSpeed, VarStack);
+                            UE_LOG(LogTemp, Log, TEXT("analogWrite Called by %s"), *FunctionNameIn);
+                        }
+                        else
+                            if (FunctionName.Equals("digitalWrite")) {
+                                DigitalWrite(ParametersArray, PinStatus, VarStack);
+                                UE_LOG(LogTemp, Log, TEXT("digitalWrite Called by %s"), *FunctionNameIn);
+                            }
+                            else
+                                if (FunctionName.Equals("delay")) {
+                                    Delay(ParametersArray, Package, PackageBits, Time, TickCount,
+                                        PinStatus, Signal, SignalBits, PinSpeed, PinActive, VarStack);
+                                    UE_LOG(LogTemp, Log, TEXT("delay Called by %s"), *FunctionNameIn);
 
-                    } else {                        
-                        if (FunctionDict.Contains(FunctionName)) {
-                           
-                            TArray<FString> VarArray = FunctionDict[FunctionName + TEXT("Var")];
-                            int32 VarCount = VarArray.Num();
-                            if (ParametersArray.Num() == VarCount) { //type check for passing correct number of variable into function
-                                for (int i = 0; i < VarCount; i++) {
-                                    if (ParametersArray[i].IsNumeric()) {
-                                        PushVar(VarArray[i] + TEXT(" = ") + ParametersArray[i], VarStack);
+                                }
+                                else {
+                                    if (FunctionDict.Contains(FunctionName)) {
+
+                                        TArray<FString> VarArray = FunctionDict[FunctionName + TEXT("Var")];
+                                        int32 VarCount = VarArray.Num();
+                                        if (ParametersArray.Num() == VarCount) { //type check for passing correct number of variable into function
+                                            for (int i = 0; i < VarCount; i++) {
+                                                if (ParametersArray[i].IsNumeric()) {
+                                                    PushVar(VarArray[i] + TEXT(" = ") + ParametersArray[i], VarStack);
+                                                }
+                                                else {
+                                                    FString VarValue = GetVar(ParametersArray[i], VarStack);
+                                                    PushVar(VarArray[i] + TEXT(" = ") + VarValue, VarStack);
+                                                }
+                                            }
+                                            CallFunction(FunctionName, FunctionDict, VarStack, Package, PackageBits,
+                                                Time, TickCount, PinStatus, Signal, SignalBits, PinSpeed, PinActive,compileMessage);
+
+                                            PopVar(VarCount, VarStack);
+                                        }
+                                        else {
+                                            UE_LOG(LogTemp, Log, TEXT("Function variable mismatch or missing : "));
+                                        }
                                     }
                                     else {
-                                        FString VarValue = GetVar(ParametersArray[i], VarStack);
-                                        PushVar(VarArray[i] + TEXT(" = ") + VarValue, VarStack);
+                                        compileMessage = TEXT("Function Not Found: " + FunctionName);
+                                        UE_LOG(LogTemp, Log, TEXT("Function Not Found : %s"), *FunctionName);
                                     }
                                 }
-                                CallFunction(FunctionName, FunctionDict, VarStack, Package, PackageBits,
-                                    Time, TickCount, PinStatus, Signal, SignalBits, PinSpeed, PinActive);
-
-                                PopVar(VarCount, VarStack);
-                            }
-                            else {
-                                UE_LOG(LogTemp, Log, TEXT("Function variable mismatch or missing : "));
-                            }
-                        }
-                        else {
-                            UE_LOG(LogTemp, Log, TEXT("Function Not Found : %s"), *FunctionName);
-                        }
-                    }
 
                 }
 
+                }
             }
         }
     }
@@ -485,6 +479,7 @@ FString UReadWriteSample::GetVar(const FString& VarName, TArray<TArray<FString>>
             return VarStack[i][2];
         }
     }
+    UE_LOG(LogTemp, Log, TEXT("Variable Not Found: %s"), *VarName);
     return "";
 }
 

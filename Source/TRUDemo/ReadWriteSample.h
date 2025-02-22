@@ -23,8 +23,7 @@ class TRUDEMO_API UReadWriteSample : public UBlueprintFunctionLibrary
 		static FString ReadFromFile(FString filepath, FString& info);
 
 	UFUNCTION(BlueprintCallable)
-		static void WriteToFile(FString filepath, FString Content,FString& OutInfo);
-	UFUNCTION(BlueprintCallable)
+		static FString WriteToFile(FString filepath, FString Content);
 		static void ProgressTick(TArray<FString>& Package, TArray<FString>& PackageBits, int32& Time, 
 			int32& TickCount, TArray<int32>& PinStatus, TArray<FString>& Signal, TArray<FString>& SignalBits, 
 			TArray<int32>& PinSpeed, TArray<int32>& PinActive);
@@ -59,8 +58,8 @@ class TRUDEMO_API UReadWriteSample : public UBlueprintFunctionLibrary
 
 		static void CallFunction(const FString& FunctionNameIn, TMap<FString, TArray<FString>>& FunctionDict,
 			TArray<TArray<FString>>& VarStack, TArray<FString>& Package, TArray<FString>& PackageBits,
-			int32& Time, int32& TickCount, TArray<int32>& PinStatus,
-			TArray<FString>& Signal, TArray<FString>& SignalBits, TArray<int32>& PinSpeed, TArray<int32>& PinActive);
+			int32& Time, int32& TickCount, TArray<int32>& PinStatus,TArray<FString>& Signal, 
+			TArray<FString>& SignalBits, TArray<int32>& PinSpeed, TArray<int32>& PinActive, FString& compileMessage);
 
 		static FString GetVar(const FString& VarName, TArray<TArray<FString>>& VarStack);
 

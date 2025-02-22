@@ -10,13 +10,15 @@ void setup() {
 	pinMode(backward, OUTPUT);
 	pinMode(leftturn, OUTPUT);
 	pinMode(rightturn, OUTPUT);
-	goForward(1000);
+	int driveTime = 1000;
+	goForward(driveTime);
 	delay(1000);
 	goDoubleForward(1000);
 	delay(1000);
 	goLeft(1000);	 
 	goBackward(1000);
-	goRight(1000);
+	goRight(1000,122);
+	goForward(NotAVariable);
 	NotAFunction(1000);
 
 } // end of setup()
@@ -49,9 +51,9 @@ void goBackward(int driveTime){
 
 }
 
-void goRight(int turnTime){
+void goRight(int turnTime, int speed){
 	digitalWrite(rightturn, HIGH);
-	analogWrite(rightturn, 255); // set a power between 0 and 255
+	analogWrite(rightturn, speed); // set a power between 0 and 255
 	delay(turnTime);
 	analogWrite(rightturn, 0); 
 }
