@@ -20,3 +20,9 @@ bool isTwoWordInstruction(u16 opcode);
 
 /* Where the opcode rubber meets the memory road */
 void avrInstruction(CPU *cpu);
+
+/* Delaying each instruction cycle for approprate amount of time*/
+void delayNanoSec(int iterations);
+
+
+

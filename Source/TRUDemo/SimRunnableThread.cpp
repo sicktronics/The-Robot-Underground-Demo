@@ -3,6 +3,8 @@
 
 FSimRunnableThread::FSimRunnableThread()
 {
+	// Try highest priority next?
+	// Thread = FRunnableThread::Create(this, TEXT("Sim Thread"), 0, TPri_AboveNormal);
 	Thread = FRunnableThread::Create(this, TEXT("Sim Thread"));
 }
 
