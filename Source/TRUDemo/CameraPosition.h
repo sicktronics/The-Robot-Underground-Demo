@@ -23,7 +23,7 @@ public:
 	int connectionInputDirection;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Main Connection")
 	AActor* connectedCameraPosition;
-	UPROPERTY(VisibleAnywhere, Category = "Runtime Connection List")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Runtime Connection List")
 	//UPROPERTY(meta=(HideInDetailPanel))
 	TMap< FString, UCameraPosition*> connectionsList;
 
