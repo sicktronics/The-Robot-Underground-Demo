@@ -35,14 +35,14 @@ void UTempCPU::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 
 void UTempCPU::LoadPinData()
 {
-	if (!FPlatformFileManager::Get().GetPlatformFile().FileExists(TEXT("C:/Users/lucky/Downloads/NOKILL/package1.txt"))) {
+	if (!FPlatformFileManager::Get().GetPlatformFile().FileExists(TEXT("D:/EPIC/UEProjects/TRUDemo/The-Robot-Underground-Demo/signal.txt"))) {
 
 		UFunctions::Log("File does not exist");
 
 	} else {
 
 		UFunctions::Log("File exists");
-		if (FFileHelper::LoadFileToString(retString, TEXT("C:/Users/lucky/Downloads/NOKILL/package1.txt"))) {
+		if (FFileHelper::LoadFileToString(retString, TEXT("D:/EPIC/UEProjects/TRUDemo/The-Robot-Underground-Demo/signal.txt"))) {
 			UFunctions::Log("File successfully loaded into string");
 			SplitPinData();
 		}
@@ -77,12 +77,12 @@ void UTempCPU::SplitPinData()
 
 int UTempCPU::GetPinData(int pinNum, int loc) {
 
-	const TCHAR* p = *(pins[pinNum]);
+	const TCHAR* p = *(pins[pinNum - 1]);
 	int r;
 	if (loc < 255 * TIMEFRAME)
 	{
 		r = p[loc] - '0';
 	} else r = 0;
-	UE_LOG(LogTemp, Warning, TEXT("CPU Sent value of %i"), r);
+	UE_LOG(LogTemp, Warning, TEXT("CPU Sent value of %i on pin %i at loc %i"), r, pinNum, loc);
 	return r;
 }

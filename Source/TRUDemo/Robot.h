@@ -29,6 +29,10 @@ public:
 	int driveLeftPinNum = 1;
 	UPROPERTY(EditAnywhere, Category = "Pin Numbers")
 	int driveRightPinNum = 2;
+	UPROPERTY(EditAnywhere, Category = "Pin Numbers")
+	int driveRDirectionPinNum = 3;
+	UPROPERTY(EditAnywhere, Category = "Pin Numbers")
+	int driveLDirectionPinNum = 4;
 	UPROPERTY(VisibleAnywhere, Category = "Moter Speeds")
 	float driveLeftMult;
 	UPROPERTY(VisibleAnywhere, Category = "Moter Speeds")
