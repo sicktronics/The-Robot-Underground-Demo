@@ -15,8 +15,7 @@ UCameraMover::UCameraMover()
 
 
 // Called when the game starts
-void UCameraMover::BeginPlay()
-{
+void UCameraMover::BeginPlay() {
 	Super::BeginPlay();
 	MoveToStateLocation(startPos);
 	// ...	
@@ -32,8 +31,8 @@ void UCameraMover::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 }
 
 void UCameraMover::CycleAdjStateLocation(FString inputKey) {
+	UCameraPosition* cameraPos = UFunctions::GetComponentByClass<UCameraPosition>(currentPos);
 
-	UFunctions::Log("Blorp");
 	if (IsValid(UFunctions::GetComponentByClass<UCameraPosition>(currentPos)))
 	{
 		if (UFunctions::GetComponentByClass<UCameraPosition>(currentPos)->connectionsList.Contains(inputKey))
@@ -55,19 +54,23 @@ void UCameraMover::CycleAdjStateLocation(FString inputKey) {
 }
 
 void UCameraMover::MoveToStateLocation(AActor* loc) {
-	if (IsValid(loc))
-	{
+	if (IsValid(loc)) {
+		
 		self->SetActorLocation(loc->GetActorLocation());
 		self->SetActorRotation(loc->GetActorRotation());
 
 		currentPos = loc;
-	} else
-	{
+	}
+	else {
 		UE_LOG(LogTemp, Warning, TEXT("state location does not exist"));
 	}
 	
 }
 
+FString UCameraMover::GetCurrentLocationLabel()
+{
+	return UFunctions::GetComponentByClass<UCameraPosition>(currentPos)->stateLabel;
+}
 // void UCameraMover::SetPlayerController(AActor* pc)
 // {
 // 	playerController = pc;

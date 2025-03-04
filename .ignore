@@ -1,8 +1,9 @@
 /.git
+/.github
+/.vs
 /.vscode
+/Backup
 /Content
 /DerivedDataCache
 /Intermediate
 /Saved
-/Plugins/LEDBlinkTest/Content
-/Plugins/LEDBlinkTest/Intermediate

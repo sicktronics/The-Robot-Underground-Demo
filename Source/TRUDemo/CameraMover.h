@@ -23,7 +23,7 @@ public:
 	AActor* self;
 	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Values")
 	// int playState = 0;
-	UPROPERTY(VisibleAnywhere, Category = "Values")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Values")
 	AActor* currentPos = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Values")
 	AActor* startPos = nullptr;
@@ -42,7 +42,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void CycleAdjStateLocation(FString inputKey);
 	void MoveToStateLocation(AActor* loc);
-
+	UFUNCTION(BlueprintCallable)
+	FString GetCurrentLocationLabel();
 	// UFUNCTION(BlueprintCallable)
 	// void SetPlayerController(AActor* pc);
 		
