@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-#include "SimIndex.h"
 #include "SimExecute.h"
 #include "LED13Actor.h"
 #include "SimRunnableThread.h"
@@ -12,7 +11,7 @@
 #include "LEDBlinkTest1GameModeBase.generated.h"
 
 /**
- * 
+ * Game mode for the LED Blink test!
  */
 UCLASS()
 class TRUDEMO_API ALEDBlinkTest1GameModeBase : public AGameModeBase

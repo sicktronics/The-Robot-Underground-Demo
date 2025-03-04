@@ -5,7 +5,10 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "LED13Actor.generated.h"
-
+/*
+* Class for the Built-in led light on the Arduino board.
+* Functionality currently implemented in Blueprint child class.
+*/
 UCLASS()
 class TRUDEMO_API ALED13Actor : public AActor
 {

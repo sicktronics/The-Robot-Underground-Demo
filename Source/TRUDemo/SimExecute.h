@@ -2,8 +2,6 @@
 
 #pragma once
 
-// #include "Async/Async.h"
-// #include "SimIndex.h"
 #include "SimRunnableThread.h"
 #include "HAL/Runnable.h"
 #include "LEDBlinkTest.h"
@@ -13,7 +11,10 @@
 #include "Kismet/GameplayStatics.h"
 #include "GenericPlatform/GenericPlatformProcess.h"
 #include "SimExecute.generated.h"
-
+/*
+* Struct to pass the pin state (for now, of LED 13) to the ToggleLEDColor 
+* function of the BPLED13Actor
+*/
 USTRUCT(BlueprintType)
 struct FBooleanParameter
 {
@@ -25,18 +26,15 @@ struct FBooleanParameter
 	FBooleanParameter() : IsON(false) {}
 };
 
+/*
+* Class that manages the state of simulation execution
+*/
 UCLASS()
 class TRUDEMO_API ASimExecute : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
-
-	UPROPERTY()
-	int cycleCounter;
-
-	UPROPERTY()
-	int maxCycleCount;
 
 	UPROPERTY(BlueprintReadWrite)
 	bool oldLED13Value; // Old value of LED 13
@@ -45,19 +43,19 @@ public:
 	bool newLED13Value; // New value of LED 13
 
 	UPROPERTY()
-	AActor* LED13Ref;
+	AActor* LED13Ref;	// Reference to our LED 13 Actor
 
-	// UPROPERTY() So...Now a UPROPERTY?
+	// Instance of the simulation THREAD
 	FSimRunnableThread* SimThread = nullptr;
 
 	UPROPERTY()
-	UFunction* LEDFunction;
+	UFunction* LEDFunction;	// Pointer to the LED 13's function
 
 	UPROPERTY()
-	FName FunctionName;
+	FName FunctionName;		// To store the name of the function of interest
 
 	UPROPERTY()
-	FBooleanParameter Param;
+	FBooleanParameter Param; // Blueprint boolean function parameter
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<AActor> BPLED13Actor; // Needs to be populated somehow (e.g. by exposing to blueprints as uproperty and setting it there
@@ -76,9 +74,11 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	// Function for starting the LED Blink Test simulation
 	UFUNCTION(BlueprintCallable)
 	void startSim();
 
+	// Function for stopping the LED Blink Test simulation
 	UFUNCTION(BlueprintCallable)
 	void stopSim();
 

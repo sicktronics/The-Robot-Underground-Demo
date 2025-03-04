@@ -5,27 +5,14 @@
 
 // Called when the game starts
 void ALEDBlinkTest1GameModeBase::BeginPlay()
-{
-	Super::BeginPlay();
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Let the games begin"));
+{   
 
+	Super::BeginPlay();
+    
+	// GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Let the games begin"));
+
+    // Turning off lighting to give my poor little laptop a break
     UGameViewportClient* GameViewport =  GetWorld()->GetGameViewport();
 	GameViewport->ViewModeIndex = 2;
-
-    // TSharedPtr<FSimRunnableThread> SimRunnable = MakeShared<FSimRunnableThread>(10);
-
-    // Spawn SimIndex and get reference
-    // ASimIndex* MySimIndex = (ASimIndex*) GetWorld()->SpawnActor(ASimIndex::StaticClass());
-
-    // Spawn SimExecute
-    // ASimExecute* MySimExecute = (ASimExecute*) GetWorld()->SpawnActor(ASimExecute::StaticClass());
-
-    // Spawn LED 13
-    // ALED13Actor* MyLED13Actor = (ALED13Actor*) GetWorld()->SpawnActor(ALED13Actor::StaticClass());
-
-    // Give a reference of LED 13 to MySimExecute!!
-    // MySimExecute->ReceiveLED13Actor(MyLED13Actor);
-
-    // And then MySimExecute will call the function in LED13 class
 
 }
