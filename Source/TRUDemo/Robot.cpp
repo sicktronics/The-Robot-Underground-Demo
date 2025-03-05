@@ -28,7 +28,12 @@ void URobot::BeginPlay()
 void URobot::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	UTempCPU* cpu = UFunctions::GetComponentByClass<UTempCPU>(CPUObj);
+	
+}
+
+FVector URobot::GetMovementVector(float DeltaTime)
+{
+	UTempCPU* cpu = UFunctions::GetComponentByClass<UTempCPU>(self);
 	if (go == true) {
 
 		driveLeftMult = (-2*(cpu->GetPinData(driveLDirectionPinNum, tick)) + 1) * ToSpeedDCMotor(cpu->GetPinData(driveLeftPinNum, tick), driveLeftMult);
@@ -40,10 +45,13 @@ void URobot::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 		float deltaPos = (driveLeftMult + driveRightMult) / 2;
 		float deltaRot = FMath::Atan((driveRightMult - driveLeftMult) / robotWidth);
 
-		self->SetActorLocation(self->GetActorLocation() + (deltaPos * moveSpeed * DeltaTime) * self->GetActorForwardVector());
-		self->SetActorRotation(self->GetActorRotation() + FRotator(0, deltaRot * DeltaTime, 0));
-
 		tick++;
+		self->SetActorRotation(self->GetActorRotation() + FRotator(0, deltaRot * DeltaTime, 0));
+		return self->GetActorLocation() + (deltaPos * moveSpeed * DeltaTime) * self->GetActorForwardVector();
+		
+	} else
+	{
+		return FVector::ZeroVector;
 	}
 }
 
