@@ -1,5 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
-
+using System;
+using System.IO;
 using UnrealBuildTool;
 
 public class TRUDemo : ModuleRules
@@ -8,9 +9,12 @@ public class TRUDemo : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput" });
+		// Explicitly including the LEDBlinkTest plugin module here
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "LEDBlinkTest" });
 
-		PrivateDependencyModuleNames.AddRange(new string[] {  });
+		// Explicitly including the LEDBlinkTest plugin module here
+		// LEDBlinkTest internally includes the static library per its own .Build.cs
+		PrivateDependencyModuleNames.AddRange(new string[] { "LEDBlinkTest" });
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
@@ -19,5 +23,6 @@ public class TRUDemo : ModuleRules
 		// PrivateDependencyModuleNames.Add("OnlineSubsystem");
 
 		// To include OnlineSubsystemSteam, add it to the plugins section in your uproject file with the Enabled attribute set to true
+		
 	}
 }
