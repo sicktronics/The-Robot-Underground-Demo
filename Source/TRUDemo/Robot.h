@@ -54,9 +54,11 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UFUNCTION(BlueprintCallable)
-	FVector GetMovementVector(float DeltaTime);
+	FRotator GetMovementVector(float DeltaTime);
 	UFUNCTION(BlueprintCallable)
 	float ToSpeedDCMotor(int input, float avg);
+	UFUNCTION(BlueprintCallable)
+	float GetDriveSpeed(float DeltaTime);
 	UFUNCTION(BlueprintCallable)
 	void SetGo();
 };
