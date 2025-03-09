@@ -5,6 +5,7 @@
 /Debug
 /Binaries
 /Plugins/**/Intermediate/*
+/Plugins/**/Binaries/*
 /.vscode
 /.vs
 .vsconfig
