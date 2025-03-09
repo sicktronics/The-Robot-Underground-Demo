@@ -1,9 +1,6 @@
-/.git
-/.github
-/.vs
-/.vscode
-/Backup
+/Saved
 /Content
 /DerivedDataCache
+/.git
+/.vscode
 /Intermediate
-/Saved
