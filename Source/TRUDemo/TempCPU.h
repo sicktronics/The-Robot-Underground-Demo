@@ -19,8 +19,11 @@ public:
 	// Sets default values for this component's properties
 	UTempCPU();
 
-	UPROPERTY(EditAnywhere, Category = "Core")
+	//UPROPERTY(EditAnywhere, Category = "Core")
 	FString retString;
+
+	UPROPERTY(EditAnywhere, Category = "Core")
+	FString filename;
 
 	UPROPERTY(EditAnywhere, Category = "Runtime Connection List")
 	TArray<FString> pins;

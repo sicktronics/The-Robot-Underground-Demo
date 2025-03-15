@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "TempCPU.h"
+#include "Functions.h"
 
 
 #include "Robot.generated.h"
@@ -19,16 +20,18 @@ public:
 	// Sets default values for this component's properties
 	URobot();
 
-	UPROPERTY(EditAnywhere, Category = "Core Data")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Core Data")
 	float moveSpeed;
-	UPROPERTY(EditAnywhere, Category = "Core Data")
-	AActor* CPUObj;
 	UPROPERTY(EditAnywhere, Category = "Core Data")
 	float robotWidth = 1;
 	UPROPERTY(EditAnywhere, Category = "Pin Numbers")
 	int driveLeftPinNum = 1;
 	UPROPERTY(EditAnywhere, Category = "Pin Numbers")
 	int driveRightPinNum = 2;
+	UPROPERTY(EditAnywhere, Category = "Pin Numbers")
+	int driveRDirectionPinNum = 3;
+	UPROPERTY(EditAnywhere, Category = "Pin Numbers")
+	int driveLDirectionPinNum = 4;
 	UPROPERTY(VisibleAnywhere, Category = "Moter Speeds")
 	float driveLeftMult;
 	UPROPERTY(VisibleAnywhere, Category = "Moter Speeds")
@@ -49,7 +52,11 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UFUNCTION(BlueprintCallable)
+	FRotator GetMovementVector(float DeltaTime);
+	UFUNCTION(BlueprintCallable)
 	float ToSpeedDCMotor(int input, float avg);
+	UFUNCTION(BlueprintCallable)
+	float GetDriveSpeed(float DeltaTime);
 	UFUNCTION(BlueprintCallable)
 	void SetGo();
 };
