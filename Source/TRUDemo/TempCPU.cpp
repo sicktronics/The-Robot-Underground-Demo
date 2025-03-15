@@ -35,14 +35,14 @@ void UTempCPU::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 
 void UTempCPU::LoadPinData()
 {
-	if (!FPlatformFileManager::Get().GetPlatformFile().FileExists(TEXT("C:/Users/lucky/Downloads/NOKILL/package1.txt"))) {
+	if (!FPlatformFileManager::Get().GetPlatformFile().FileExists(*(FPaths::ProjectDir() + filename))) {
 
 		UFunctions::Log("File does not exist");
 
 	} else {
 
 		UFunctions::Log("File exists");
-		if (FFileHelper::LoadFileToString(retString, TEXT("C:/Users/lucky/Downloads/NOKILL/package1.txt"))) {
+		if (FFileHelper::LoadFileToString(retString, *(FPaths::ProjectDir() + filename))) {
 			UFunctions::Log("File successfully loaded into string");
 			SplitPinData();
 		}
