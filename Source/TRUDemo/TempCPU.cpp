@@ -77,7 +77,7 @@ void UTempCPU::SplitPinData()
 
 int UTempCPU::GetPinData(int pinNum, int loc) {
 
-	const TCHAR* p = *(pins[pinNum]);
+	const TCHAR* p = *(pins[pinNum-1]);
 	int r;
 	if (loc < 255 * TIMEFRAME)
 	{
