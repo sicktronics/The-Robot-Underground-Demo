@@ -19,6 +19,8 @@ void URobot::BeginPlay()
 {
 	Super::BeginPlay();
 	self = GetOwner();
+	
+	initRotation = self->GetActorRotation();
 	// ...
 	
 }
@@ -46,12 +48,12 @@ FRotator URobot::GetMovementVector(float DeltaTime)
 		float deltaRot = FMath::Atan((driveRightMult - driveLeftMult) / robotWidth);
 
 		tick++;
-		return FRotator(0, deltaRot * DeltaTime, 0);
+		return initRotation + FRotator(0, deltaRot * DeltaTime, 0);
 		//return self->GetActorLocation() + (deltaPos * moveSpeed * DeltaTime) * self->GetActorForwardVector();
 		
-	} else
-	{
-		return FRotator(0, 0, 0);
+	}
+	else {
+		return initRotation;
 	}
 }
 
