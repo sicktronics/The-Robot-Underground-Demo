@@ -42,6 +42,8 @@ public:
 	int tick = 0;
 	UPROPERTY(VisibleAnywhere, Category = "Derived Data")
 	bool go = false;
+	UPROPERTY(VisibleAnywhere, Category = "Derived Data")
+	FRotator initRotation;
 
 protected:
 	// Called when the game starts
