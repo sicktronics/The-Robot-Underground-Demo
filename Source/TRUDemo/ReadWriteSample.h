@@ -9,7 +9,7 @@
 constexpr int32 MaxTimeframe = 10;
 constexpr int32 MaxSpeed = 255;
 constexpr int32	Tick = 1; //This is ms per tick
-constexpr int32 Pins = 4;
+constexpr int32 Pins = 8;
 
 
 /**

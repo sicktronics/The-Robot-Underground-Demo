@@ -231,6 +231,10 @@ void UReadWriteSample::AnalogWrite(const TArray<FString>& Para, TArray<int32>& p
         SpeedNumber = FCString::Atoi(*Para[1].TrimStartAndEnd());
     }
     //UE_LOG(LogTemp, Log, TEXT("change speed pin : %d to %d"), PinNumber -1, SpeedNumber);
+    if (PinNumber==3 || PinNumber==6) {
+        pinSpeed[PinNumber - 2] = SpeedNumber;
+        pinSpeed[PinNumber - 3] = SpeedNumber;
+    }
     pinSpeed[PinNumber-1] = SpeedNumber;
 
 }
