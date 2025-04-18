@@ -25,7 +25,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Core")
 	FString filename;
 
-	UPROPERTY(EditAnywhere, Category = "Runtime Connection List")
+	//UPROPERTY(EditAnywhere, Category = "Runtime Connection List")
 	TArray<FString> pins;
 
 	
