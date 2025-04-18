@@ -25,25 +25,6 @@ void ASimExecute::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// Find all actors of class BPLED13Actor and get a reference to its function of interest 
-	if(BPLED13Actor){
-		TArray<AActor*> FoundActors;
-		UGameplayStatics::GetAllActorsOfClass(GetWorld(), BPLED13Actor, FoundActors);
-
-		// Ensure at least one actor is found
-		if (FoundActors.Num() > 0)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Found LED 13"));
-			LED13Ref = FoundActors[0]; // Assuming the first one found is the one you want
-
-			    // Find relevant BP Function
-				FunctionName = TEXT("ToggleLEDColor");
-				LEDFunction = LED13Ref->FindFunction(FunctionName);
-
-				// Create and populate the parameter struct
-            	Param;
-		}
-	}
 }
 
 // Called every frame
@@ -87,6 +68,27 @@ void ASimExecute::AsyncPhysicsTickActor(float DeltaTime, float SimTime)
 }
 
 void ASimExecute::startSim(){
+	
+	// Find all actors of class BPLED13Actor and get a reference to its function of interest 
+	if(BPLED13Actor){
+		TArray<AActor*> FoundActors;
+		UGameplayStatics::GetAllActorsOfClass(GetWorld(), BPLED13Actor, FoundActors);
+
+		// Ensure at least one actor is found
+		if (FoundActors.Num() > 0)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Found LED 13"));
+			LED13Ref = FoundActors[0]; // Assuming the first one found is the one you want
+
+			    // Find relevant BP Function
+				FunctionName = TEXT("ToggleLEDColor");
+				LEDFunction = LED13Ref->FindFunction(FunctionName);
+
+				// Create and populate the parameter struct
+            	Param;
+		}
+	}
+	
 	// Create a new dedicated simulation thread
 	SimThread = new FSimRunnableThread();
 }
