@@ -35,11 +35,13 @@ void URobot::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 
 FRotator URobot::GetMovementVector(float DeltaTime)
 {
+
+
 	UTempCPU* cpu = UFunctions::GetComponentByClass<UTempCPU>(self);
 	if (go == true) {
 
-		driveLeftMult = (-2*(cpu->GetPinData(driveLDirectionPinNum, tick)) + 1) * ToSpeedDCMotor(cpu->GetPinData(driveLeftPinNum, tick), driveLeftMult);
-		driveRightMult = (-2*(cpu->GetPinData(driveRDirectionPinNum, tick)) + 1) * ToSpeedDCMotor(cpu->GetPinData(driveRightPinNum, tick), driveRightMult);
+		driveLeftMult = (cpu->GetPinData(leftForwardPin, tick) - cpu->GetPinData(leftBackwardPin, tick)) * ToSpeedDCMotor(cpu->GetPinData(driveLeftPin, tick), driveLeftMult);
+		driveRightMult = (cpu->GetPinData(rightForwardPin, tick) - cpu->GetPinData(rightBackwardPin, tick)) * ToSpeedDCMotor(cpu->GetPinData(driveRightPin, tick), driveRightMult);
 
 		// UE_LOG(LogTemp, Warning, TEXT("Going with driveLeftMult of %f ..."), driveLeftMult);
 		// UE_LOG(LogTemp, Warning, TEXT("Going with driveRightMult of %f ..."), driveRightMult);
@@ -62,8 +64,8 @@ float URobot::GetDriveSpeed(float DeltaTime)
 	UTempCPU* cpu = UFunctions::GetComponentByClass<UTempCPU>(self);
 	if (go == true) {
 
-		driveLeftMult = (-2*(cpu->GetPinData(driveLDirectionPinNum, tick)) + 1) * ToSpeedDCMotor(cpu->GetPinData(driveLeftPinNum, tick), driveLeftMult);
-		driveRightMult = (-2*(cpu->GetPinData(driveRDirectionPinNum, tick)) + 1) * ToSpeedDCMotor(cpu->GetPinData(driveRightPinNum, tick), driveRightMult);
+		driveLeftMult = (cpu->GetPinData(leftForwardPin, tick) - cpu->GetPinData(leftBackwardPin, tick)) * ToSpeedDCMotor(cpu->GetPinData(driveLeftPin, tick), driveLeftMult);
+		driveRightMult = (cpu->GetPinData(rightForwardPin, tick) - cpu->GetPinData(rightBackwardPin, tick)) * ToSpeedDCMotor(cpu->GetPinData(driveRightPin, tick), driveRightMult);
 
 		UE_LOG(LogTemp, Warning, TEXT("Going with driveLeftMult of %f ..."), driveLeftMult);
 		UE_LOG(LogTemp, Warning, TEXT("Going with driveRightMult of %f ..."), driveRightMult);
