@@ -24,14 +24,22 @@ public:
 	float moveSpeed;
 	UPROPERTY(EditAnywhere, Category = "Core Data")
 	float robotWidth = 1;
-	UPROPERTY(EditAnywhere, Category = "Pin Numbers")
-	int driveLeftPinNum = 1;
-	UPROPERTY(EditAnywhere, Category = "Pin Numbers")
-	int driveRightPinNum = 2;
-	UPROPERTY(EditAnywhere, Category = "Pin Numbers")
-	int driveRDirectionPinNum = 3;
-	UPROPERTY(EditAnywhere, Category = "Pin Numbers")
-	int driveLDirectionPinNum = 4;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Pin Numbers")
+	int driveLeftPin = 1;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Pin Numbers")
+	int driveRightPin = 2;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Pin Numbers")
+	int leftBackwardPin = 3;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Pin Numbers")
+	int leftForwardPin = 4;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Pin Numbers")
+	int rightBackwardPin = 5;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Pin Numbers")
+	int rightForwardPin = 6;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Pin Numbers")
+	int clawOne = 7;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Pin Numbers")
+	int clawTwo = 8;
 	UPROPERTY(VisibleAnywhere, Category = "Moter Speeds")
 	float driveLeftMult;
 	UPROPERTY(VisibleAnywhere, Category = "Moter Speeds")
