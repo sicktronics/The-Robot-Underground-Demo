@@ -61,20 +61,9 @@ FString UReadWriteSample::WriteToFile(FString filepath, FString content) {
 void UReadWriteSample::ProgressTick(TArray<FString>& Package, TArray<FString>& PackageBits, int32& Time, int32& TickCount, TArray<int32>& PinStatus,
     TArray<FString>& Signal, TArray<FString>& SignalBits, TArray<int32>& PinSpeed , TArray<int32>& PinActive) {
     if (Time == 0) {//header
-        //Package.Add(FString("\nPackage output"));
-        //Package.Add(FString("Time frame total = ") + FString::FromInt(MaxTimeframe) + FString(", ms per tick = ")
-        //    + FString::FromInt(Tick) + FString("ms"));
         Signal.Add(FString("Signal output"));
     }
     while (TickCount < (1000 / Tick)) {  //pad the rest of tick in the time frame
-        //for (int i = 0; i < Pins; i++) {
-        //    if (PinActive[i] == 1) {
-        //        PackageBits[i] += FString::FromInt(PinStatus[i]);
-        //    }
-        //    else {
-        //        PackageBits[i] += "0";
-        //    }
-        //}
         for (int i = 0; i < Pins; i++) {
             for (int j = 0; j < MaxSpeed; j++) {
                 if (PinActive[i] == 1) {
@@ -93,13 +82,6 @@ void UReadWriteSample::ProgressTick(TArray<FString>& Package, TArray<FString>& P
         }
         TickCount += 1;
     }
-    //Now write to array
-    //Package.Add(FString("**********"));
-    //Package.Add(FString("t = ") + FString::FromInt(Time));
-    //for (int i = 0; i < Pins; i++) {
-    //    Package.Add(FString("pin") + FString::FromInt(i + 1) + FString(" : ") + PackageBits[i]);
-    //    PackageBits[i] = "";
-    //}
     Signal.Add(FString("**********"));
     Signal.Add(FString("t = ") + FString::FromInt(Time));
     for (int i = 0; i < Pins; i++) {
@@ -208,7 +190,7 @@ void UReadWriteSample::PinMode(const TArray<FString>& Para, TArray<int32>& pinAc
     }    
 }
 
-void UReadWriteSample::AnalogWrite(const TArray<FString>& Para, TArray<int32>& pinSpeed, TArray<TArray<FString>>& VarStack) {
+void UReadWriteSample::AnalogWrite(const TArray<FString>& Para, TArray<int32>& pinSpeed, TArray<TArray<FString>>& VarStack, TArray<int32>& pinStatus) {
     if (Para.Num() > 2) {
         return;
     }
@@ -231,15 +213,12 @@ void UReadWriteSample::AnalogWrite(const TArray<FString>& Para, TArray<int32>& p
         SpeedNumber = FCString::Atoi(*Para[1].TrimStartAndEnd());
     }
     //UE_LOG(LogTemp, Log, TEXT("change speed pin : %d to %d"), PinNumber -1, SpeedNumber);
-    if (PinNumber==3 || PinNumber==6) {
-        pinSpeed[PinNumber - 2] = SpeedNumber;
-        pinSpeed[PinNumber - 3] = SpeedNumber;
-    }
+    pinStatus[PinNumber - 1] = 1;
     pinSpeed[PinNumber-1] = SpeedNumber;
 
 }
 
-void UReadWriteSample::DigitalWrite(const TArray<FString>& Para, TArray<int32>& pinStatus, TArray<TArray<FString>>& VarStack) {
+void UReadWriteSample::DigitalWrite(const TArray<FString>& Para, TArray<int32>& pinStatus, TArray<TArray<FString>>& VarStack, TArray<int32>& pinSpeed) {
     if (Para.Num() > 2) {
         return;
     }
@@ -248,10 +227,12 @@ void UReadWriteSample::DigitalWrite(const TArray<FString>& Para, TArray<int32>& 
         if (!VarValue.IsEmpty()) {
             if (Para[1].Contains(TEXT("high"), ESearchCase::IgnoreCase)) {
                 pinStatus[FCString::Atoi(*VarValue.TrimStartAndEnd()) - 1] = 1;
+                pinSpeed[FCString::Atoi(*VarValue.TrimStartAndEnd()) - 1] = MaxSpeed;
             }
             else
             if (Para[1].Contains(TEXT("low"), ESearchCase::IgnoreCase)) {
                 pinStatus[FCString::Atoi(*VarValue.TrimStartAndEnd()) - 1] = 0;
+                pinSpeed[FCString::Atoi(*VarValue.TrimStartAndEnd()) - 1] = 0;
             }
         }
     }
@@ -259,9 +240,11 @@ void UReadWriteSample::DigitalWrite(const TArray<FString>& Para, TArray<int32>& 
     if (Para[0].IsNumeric()) {
         if (Para[1].Contains(TEXT("high"), ESearchCase::IgnoreCase)) {
             pinStatus[FCString::Atoi(*Para[0].TrimStartAndEnd()) - 1] = 1;
+            pinSpeed[FCString::Atoi(*Para[0].TrimStartAndEnd()) - 1] = MaxSpeed;
         }
         else if (Para[1].Contains(TEXT("low"), ESearchCase::IgnoreCase)) {
             pinStatus[FCString::Atoi(*Para[0].TrimStartAndEnd()) - 1] = 0;
+            pinSpeed[FCString::Atoi(*Para[0].TrimStartAndEnd()) - 1] = 0;
         }
         else {
             return;
@@ -311,7 +294,6 @@ void UReadWriteSample::Delay(const TArray<FString>& Para,TArray<FString>& Packag
                 else {
                     SignalBits[i] += "0";
                 }
-
             }
         }
         TickCount += 1;
@@ -401,12 +383,12 @@ void UReadWriteSample::CallFunction(const FString& FunctionNameIn, TMap<FString,
                     }
                     else
                         if (FunctionName.Equals("analogWrite")) {
-                            AnalogWrite(ParametersArray, PinSpeed, VarStack);
+                            AnalogWrite(ParametersArray, PinSpeed, VarStack,PinStatus);
                             UE_LOG(LogTemp, Log, TEXT("analogWrite Called by %s"), *FunctionNameIn);
                         }
                         else
                             if (FunctionName.Equals("digitalWrite")) {
-                                DigitalWrite(ParametersArray, PinStatus, VarStack);
+                                DigitalWrite(ParametersArray, PinStatus, VarStack,PinSpeed);
                                 UE_LOG(LogTemp, Log, TEXT("digitalWrite Called by %s"), *FunctionNameIn);
                             }
                             else
@@ -458,14 +440,20 @@ void UReadWriteSample::CallFunction(const FString& FunctionNameIn, TMap<FString,
 //VarStack related function
 
 // Command format : Declaration Name  = Value;
+// If Name = Value, call ChangeVar
 void UReadWriteSample::PushVar(const FString& Command, TArray<TArray<FString>>& VarStack) {
     TArray<FString> ParametersArray;
     Command.ParseIntoArray(ParametersArray, TEXT("="), true);
     FString assign = ParametersArray[0].TrimStartAndEnd();
     FString val = ParametersArray[1].TrimStartAndEnd();
-    assign.ParseIntoArray(ParametersArray, TEXT(" "), true);
     val = val.Replace(TEXT(";"), TEXT("")).TrimStartAndEnd();
-    VarStack.Add({ ParametersArray[0], ParametersArray[1], val });
+    assign.ParseIntoArray(ParametersArray, TEXT(" "), true);
+    if (ParametersArray.Num() == 1) {
+        ChangeVar(ParametersArray[0], val, VarStack);
+    }
+    else {
+        VarStack.Add({ ParametersArray[0], ParametersArray[1], val });
+    }
 }
 
 // Number of Var to pop
@@ -478,17 +466,38 @@ void UReadWriteSample::PopVar(int& VarCount, TArray<TArray<FString>>& VarStack) 
 
 //VarName to look for value, return the string if found, or return empty string
 FString UReadWriteSample::GetVar(const FString& VarName, TArray<TArray<FString>>& VarStack) {
+    int varIndex = FindVar(VarName,VarStack);
+    if (varIndex  >= 0) {
+        return VarStack[varIndex][2];
+    }
+    else
+    {
+        return "";
+    }
+}
+
+//Input VarName, return index in VarStack
+int32 UReadWriteSample::FindVar(const FString& VarName, TArray<TArray<FString>>& VarStack) {
     for (int i = VarStack.Num() - 1; i >= 0; i--) {
         if (VarStack[i][1].Equals(VarName)) {
-            return VarStack[i][2];
+            return i;
         }
     }
     UE_LOG(LogTemp, Log, TEXT("Variable Not Found: %s"), *VarName);
-    return "";
+    return -1;
 }
 
+//
+void UReadWriteSample::ChangeVar(const FString& VarName, const FString& VarVal,TArray<TArray<FString>>& VarStack) {
+    int varIndex = FindVar(VarName, VarStack);
+    if (varIndex >= 0) {
+        VarStack[varIndex][2] = VarVal;
+    }
+    else
+    {
+    }
 
-
+}
 //Print out function
 void UReadWriteSample::PrintStringArray(const TArray<FString>& StringArray)
 {
