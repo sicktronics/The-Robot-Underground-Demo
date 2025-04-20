@@ -92,7 +92,7 @@ float URobot::ToSpeedDCMotor(int input, float avg) {
 	if (input < 0) input = 0;
 	float x = ((float)input * 100.0 / 255.0);
 	float y = (avg * 100.0 / 255.0);
-	UE_LOG(LogTemp, Warning, TEXT("x = %f, y = %f"), x, y);
+	UE_LOG(LogTemp, Warning, TEXT("input = %f, avg = %f"), x, y);
 	return avg + ((float)input * 100.0 / 255.0) - (avg * 100.0 / 255.0);
 }
 
