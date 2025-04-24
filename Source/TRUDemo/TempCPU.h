@@ -23,7 +23,7 @@ public:
 	FString retString;
 
 	UPROPERTY(EditAnywhere, Category = "Core")
-	FString filename;
+	FString filename = "signal.txt";
 
 	//UPROPERTY(EditAnywhere, Category = "Runtime Connection List")
 	TArray<FString> pins;

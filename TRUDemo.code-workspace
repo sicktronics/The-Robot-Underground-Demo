@@ -23,12 +23,12 @@
 		"version": "2.0.0",
 		"tasks": [
 			{
-				"label": "TRUDemo Mac Debug Build",
+				"label": "TRUDemo Win64 Debug Build",
 				"group": "build",
-				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
 				"args": [
 					"TRUDemo",
-					"Mac",
+					"Win64",
 					"Debug",
 					"C:\\Users\\HP\\Documents\\Unreal Projects\\TRUDemo\\TRUDemo.uproject",
 					"-waitmutex"
@@ -40,19 +40,19 @@
 				}
 			},
 			{
-				"label": "TRUDemo Mac Debug Rebuild",
+				"label": "TRUDemo Win64 Debug Rebuild",
 				"group": "build",
-				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
 				"args": [
 					"TRUDemo",
-					"Mac",
+					"Win64",
 					"Debug",
 					"C:\\Users\\HP\\Documents\\Unreal Projects\\TRUDemo\\TRUDemo.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
 				"dependsOn": [
-					"TRUDemo Mac Debug Clean"
+					"TRUDemo Win64 Debug Clean"
 				],
 				"type": "shell",
 				"options": {
@@ -60,12 +60,12 @@
 				}
 			},
 			{
-				"label": "TRUDemo Mac Debug Clean",
+				"label": "TRUDemo Win64 Debug Clean",
 				"group": "build",
-				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"command": "Engine\\Build\\BatchFiles\\Clean.bat",
 				"args": [
 					"TRUDemo",
-					"Mac",
+					"Win64",
 					"Debug",
 					"C:\\Users\\HP\\Documents\\Unreal Projects\\TRUDemo\\TRUDemo.uproject",
 					"-waitmutex"
@@ -77,12 +77,12 @@
 				}
 			},
 			{
-				"label": "TRUDemo Mac DebugGame Build",
+				"label": "TRUDemo Win64 DebugGame Build",
 				"group": "build",
-				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
 				"args": [
 					"TRUDemo",
-					"Mac",
+					"Win64",
 					"DebugGame",
 					"C:\\Users\\HP\\Documents\\Unreal Projects\\TRUDemo\\TRUDemo.uproject",
 					"-waitmutex"
@@ -94,19 +94,19 @@
 				}
 			},
 			{
-				"label": "TRUDemo Mac DebugGame Rebuild",
+				"label": "TRUDemo Win64 DebugGame Rebuild",
 				"group": "build",
-				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
 				"args": [
 					"TRUDemo",
-					"Mac",
+					"Win64",
 					"DebugGame",
 					"C:\\Users\\HP\\Documents\\Unreal Projects\\TRUDemo\\TRUDemo.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
 				"dependsOn": [
-					"TRUDemo Mac DebugGame Clean"
+					"TRUDemo Win64 DebugGame Clean"
 				],
 				"type": "shell",
 				"options": {
@@ -114,12 +114,12 @@
 				}
 			},
 			{
-				"label": "TRUDemo Mac DebugGame Clean",
+				"label": "TRUDemo Win64 DebugGame Clean",
 				"group": "build",
-				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"command": "Engine\\Build\\BatchFiles\\Clean.bat",
 				"args": [
 					"TRUDemo",
-					"Mac",
+					"Win64",
 					"DebugGame",
 					"C:\\Users\\HP\\Documents\\Unreal Projects\\TRUDemo\\TRUDemo.uproject",
 					"-waitmutex"
@@ -131,12 +131,12 @@
 				}
 			},
 			{
-				"label": "TRUDemo Mac Development Build",
+				"label": "TRUDemo Win64 Development Build",
 				"group": "build",
-				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
 				"args": [
 					"TRUDemo",
-					"Mac",
+					"Win64",
 					"Development",
 					"C:\\Users\\HP\\Documents\\Unreal Projects\\TRUDemo\\TRUDemo.uproject",
 					"-waitmutex"
@@ -148,19 +148,19 @@
 				}
 			},
 			{
-				"label": "TRUDemo Mac Development Rebuild",
+				"label": "TRUDemo Win64 Development Rebuild",
 				"group": "build",
-				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
 				"args": [
 					"TRUDemo",
-					"Mac",
+					"Win64",
 					"Development",
 					"C:\\Users\\HP\\Documents\\Unreal Projects\\TRUDemo\\TRUDemo.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
 				"dependsOn": [
-					"TRUDemo Mac Development Clean"
+					"TRUDemo Win64 Development Clean"
 				],
 				"type": "shell",
 				"options": {
@@ -168,12 +168,12 @@
 				}
 			},
 			{
-				"label": "TRUDemo Mac Development Clean",
+				"label": "TRUDemo Win64 Development Clean",
 				"group": "build",
-				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"command": "Engine\\Build\\BatchFiles\\Clean.bat",
 				"args": [
 					"TRUDemo",
-					"Mac",
+					"Win64",
 					"Development",
 					"C:\\Users\\HP\\Documents\\Unreal Projects\\TRUDemo\\TRUDemo.uproject",
 					"-waitmutex"
@@ -185,12 +185,12 @@
 				}
 			},
 			{
-				"label": "TRUDemo Mac Test Build",
+				"label": "TRUDemo Win64 Test Build",
 				"group": "build",
-				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
 				"args": [
 					"TRUDemo",
-					"Mac",
+					"Win64",
 					"Test",
 					"C:\\Users\\HP\\Documents\\Unreal Projects\\TRUDemo\\TRUDemo.uproject",
 					"-waitmutex"
@@ -202,19 +202,19 @@
 				}
 			},
 			{
-				"label": "TRUDemo Mac Test Rebuild",
+				"label": "TRUDemo Win64 Test Rebuild",
 				"group": "build",
-				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
 				"args": [
 					"TRUDemo",
-					"Mac",
+					"Win64",
 					"Test",
 					"C:\\Users\\HP\\Documents\\Unreal Projects\\TRUDemo\\TRUDemo.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
 				"dependsOn": [
-					"TRUDemo Mac Test Clean"
+					"TRUDemo Win64 Test Clean"
 				],
 				"type": "shell",
 				"options": {
@@ -222,12 +222,12 @@
 				}
 			},
 			{
-				"label": "TRUDemo Mac Test Clean",
+				"label": "TRUDemo Win64 Test Clean",
 				"group": "build",
-				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"command": "Engine\\Build\\BatchFiles\\Clean.bat",
 				"args": [
 					"TRUDemo",
-					"Mac",
+					"Win64",
 					"Test",
 					"C:\\Users\\HP\\Documents\\Unreal Projects\\TRUDemo\\TRUDemo.uproject",
 					"-waitmutex"
@@ -239,12 +239,12 @@
 				}
 			},
 			{
-				"label": "TRUDemo Mac Shipping Build",
+				"label": "TRUDemo Win64 Shipping Build",
 				"group": "build",
-				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
 				"args": [
 					"TRUDemo",
-					"Mac",
+					"Win64",
 					"Shipping",
 					"C:\\Users\\HP\\Documents\\Unreal Projects\\TRUDemo\\TRUDemo.uproject",
 					"-waitmutex"
@@ -256,19 +256,19 @@
 				}
 			},
 			{
-				"label": "TRUDemo Mac Shipping Rebuild",
+				"label": "TRUDemo Win64 Shipping Rebuild",
 				"group": "build",
-				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
 				"args": [
 					"TRUDemo",
-					"Mac",
+					"Win64",
 					"Shipping",
 					"C:\\Users\\HP\\Documents\\Unreal Projects\\TRUDemo\\TRUDemo.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
 				"dependsOn": [
-					"TRUDemo Mac Shipping Clean"
+					"TRUDemo Win64 Shipping Clean"
 				],
 				"type": "shell",
 				"options": {
@@ -276,12 +276,12 @@
 				}
 			},
 			{
-				"label": "TRUDemo Mac Shipping Clean",
+				"label": "TRUDemo Win64 Shipping Clean",
 				"group": "build",
-				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"command": "Engine\\Build\\BatchFiles\\Clean.bat",
 				"args": [
 					"TRUDemo",
-					"Mac",
+					"Win64",
 					"Shipping",
 					"C:\\Users\\HP\\Documents\\Unreal Projects\\TRUDemo\\TRUDemo.uproject",
 					"-waitmutex"
@@ -293,12 +293,12 @@
 				}
 			},
 			{
-				"label": "TRUDemoEditor Mac Debug Build",
+				"label": "TRUDemoEditor Win64 Debug Build",
 				"group": "build",
-				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
 				"args": [
 					"TRUDemoEditor",
-					"Mac",
+					"Win64",
 					"Debug",
 					"C:\\Users\\HP\\Documents\\Unreal Projects\\TRUDemo\\TRUDemo.uproject",
 					"-waitmutex"
@@ -310,19 +310,19 @@
 				}
 			},
 			{
-				"label": "TRUDemoEditor Mac Debug Rebuild",
+				"label": "TRUDemoEditor Win64 Debug Rebuild",
 				"group": "build",
-				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
 				"args": [
 					"TRUDemoEditor",
-					"Mac",
+					"Win64",
 					"Debug",
 					"C:\\Users\\HP\\Documents\\Unreal Projects\\TRUDemo\\TRUDemo.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
 				"dependsOn": [
-					"TRUDemoEditor Mac Debug Clean"
+					"TRUDemoEditor Win64 Debug Clean"
 				],
 				"type": "shell",
 				"options": {
@@ -330,12 +330,12 @@
 				}
 			},
 			{
-				"label": "TRUDemoEditor Mac Debug Clean",
+				"label": "TRUDemoEditor Win64 Debug Clean",
 				"group": "build",
-				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"command": "Engine\\Build\\BatchFiles\\Clean.bat",
 				"args": [
 					"TRUDemoEditor",
-					"Mac",
+					"Win64",
 					"Debug",
 					"C:\\Users\\HP\\Documents\\Unreal Projects\\TRUDemo\\TRUDemo.uproject",
 					"-waitmutex"
@@ -347,12 +347,12 @@
 				}
 			},
 			{
-				"label": "TRUDemoEditor Mac DebugGame Build",
+				"label": "TRUDemoEditor Win64 DebugGame Build",
 				"group": "build",
-				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
 				"args": [
 					"TRUDemoEditor",
-					"Mac",
+					"Win64",
 					"DebugGame",
 					"C:\\Users\\HP\\Documents\\Unreal Projects\\TRUDemo\\TRUDemo.uproject",
 					"-waitmutex"
@@ -364,19 +364,19 @@
 				}
 			},
 			{
-				"label": "TRUDemoEditor Mac DebugGame Rebuild",
+				"label": "TRUDemoEditor Win64 DebugGame Rebuild",
 				"group": "build",
-				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
 				"args": [
 					"TRUDemoEditor",
-					"Mac",
+					"Win64",
 					"DebugGame",
 					"C:\\Users\\HP\\Documents\\Unreal Projects\\TRUDemo\\TRUDemo.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
 				"dependsOn": [
-					"TRUDemoEditor Mac DebugGame Clean"
+					"TRUDemoEditor Win64 DebugGame Clean"
 				],
 				"type": "shell",
 				"options": {
@@ -384,12 +384,12 @@
 				}
 			},
 			{
-				"label": "TRUDemoEditor Mac DebugGame Clean",
+				"label": "TRUDemoEditor Win64 DebugGame Clean",
 				"group": "build",
-				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"command": "Engine\\Build\\BatchFiles\\Clean.bat",
 				"args": [
 					"TRUDemoEditor",
-					"Mac",
+					"Win64",
 					"DebugGame",
 					"C:\\Users\\HP\\Documents\\Unreal Projects\\TRUDemo\\TRUDemo.uproject",
 					"-waitmutex"
@@ -401,12 +401,12 @@
 				}
 			},
 			{
-				"label": "TRUDemoEditor Mac Development Build",
+				"label": "TRUDemoEditor Win64 Development Build",
 				"group": "build",
-				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
 				"args": [
 					"TRUDemoEditor",
-					"Mac",
+					"Win64",
 					"Development",
 					"C:\\Users\\HP\\Documents\\Unreal Projects\\TRUDemo\\TRUDemo.uproject",
 					"-waitmutex"
@@ -418,19 +418,19 @@
 				}
 			},
 			{
-				"label": "TRUDemoEditor Mac Development Rebuild",
+				"label": "TRUDemoEditor Win64 Development Rebuild",
 				"group": "build",
-				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"command": "Engine\\Build\\BatchFiles\\Build.bat",
 				"args": [
 					"TRUDemoEditor",
-					"Mac",
+					"Win64",
 					"Development",
 					"C:\\Users\\HP\\Documents\\Unreal Projects\\TRUDemo\\TRUDemo.uproject",
 					"-waitmutex"
 				],
 				"problemMatcher": "$msCompile",
 				"dependsOn": [
-					"TRUDemoEditor Mac Development Clean"
+					"TRUDemoEditor Win64 Development Clean"
 				],
 				"type": "shell",
 				"options": {
@@ -438,12 +438,12 @@
 				}
 			},
 			{
-				"label": "TRUDemoEditor Mac Development Clean",
+				"label": "TRUDemoEditor Win64 Development Clean",
 				"group": "build",
-				"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+				"command": "Engine\\Build\\BatchFiles\\Clean.bat",
 				"args": [
 					"TRUDemoEditor",
-					"Mac",
+					"Win64",
 					"Development",
 					"C:\\Users\\HP\\Documents\\Unreal Projects\\TRUDemo\\TRUDemo.uproject",
 					"-waitmutex"
@@ -604,8 +604,7 @@
 					"-engine",
 					"-dotnet"
 				],
-				"console": "internalConsole",
-				"internalConsoleOptions": "openOnSessionStart",
+				"console": "integratedTerminal",
 				"stopAtEntry": false,
 				"cwd": "C:\\Program Files\\Epic Games\\UE_5.4"
 			}
