@@ -35,11 +35,13 @@ void URobot::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 
 FRotator URobot::GetMovementVector(float DeltaTime)
 {
+
+
 	UTempCPU* cpu = UFunctions::GetComponentByClass<UTempCPU>(self);
 	if (go == true) {
 
-		driveLeftMult = (-2*(cpu->GetPinData(driveLDirectionPinNum, tick)) + 1) * ToSpeedDCMotor(cpu->GetPinData(driveLeftPinNum, tick), driveLeftMult);
-		driveRightMult = (-2*(cpu->GetPinData(driveRDirectionPinNum, tick)) + 1) * ToSpeedDCMotor(cpu->GetPinData(driveRightPinNum, tick), driveRightMult);
+		driveLeftMult = (cpu->GetPinData(leftForwardPin, tick) - cpu->GetPinData(leftBackwardPin, tick)) * ToSpeedDCMotor(cpu->GetPinData(driveLeftPin, tick), driveLeftMult);
+		driveRightMult = (cpu->GetPinData(rightForwardPin, tick) - cpu->GetPinData(rightBackwardPin, tick)) * ToSpeedDCMotor(cpu->GetPinData(driveRightPin, tick), driveRightMult);
 
 		// UE_LOG(LogTemp, Warning, TEXT("Going with driveLeftMult of %f ..."), driveLeftMult);
 		// UE_LOG(LogTemp, Warning, TEXT("Going with driveRightMult of %f ..."), driveRightMult);
@@ -62,8 +64,8 @@ float URobot::GetDriveSpeed(float DeltaTime)
 	UTempCPU* cpu = UFunctions::GetComponentByClass<UTempCPU>(self);
 	if (go == true) {
 
-		driveLeftMult = (-2*(cpu->GetPinData(driveLDirectionPinNum, tick)) + 1) * ToSpeedDCMotor(cpu->GetPinData(driveLeftPinNum, tick), driveLeftMult);
-		driveRightMult = (-2*(cpu->GetPinData(driveRDirectionPinNum, tick)) + 1) * ToSpeedDCMotor(cpu->GetPinData(driveRightPinNum, tick), driveRightMult);
+		driveLeftMult = (cpu->GetPinData(leftForwardPin, tick) - cpu->GetPinData(leftBackwardPin, tick)) * ToSpeedDCMotor(cpu->GetPinData(driveLeftPin, tick), driveLeftMult);
+		driveRightMult = (cpu->GetPinData(rightForwardPin, tick) - cpu->GetPinData(rightBackwardPin, tick)) * ToSpeedDCMotor(cpu->GetPinData(driveRightPin, tick), driveRightMult);
 
 		UE_LOG(LogTemp, Warning, TEXT("Going with driveLeftMult of %f ..."), driveLeftMult);
 		UE_LOG(LogTemp, Warning, TEXT("Going with driveRightMult of %f ..."), driveRightMult);
@@ -90,7 +92,7 @@ float URobot::ToSpeedDCMotor(int input, float avg) {
 	if (input < 0) input = 0;
 	float x = ((float)input * 100.0 / 255.0);
 	float y = (avg * 100.0 / 255.0);
-	UE_LOG(LogTemp, Warning, TEXT("x = %f, y = %f"), x, y);
+	UE_LOG(LogTemp, Warning, TEXT("input = %f, avg = %f"), x, y);
 	return avg + ((float)input * 100.0 / 255.0) - (avg * 100.0 / 255.0);
 }
 

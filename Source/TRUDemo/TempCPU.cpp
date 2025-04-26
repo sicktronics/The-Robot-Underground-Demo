@@ -20,7 +20,7 @@ UTempCPU::UTempCPU()
 void UTempCPU::BeginPlay()
 {
 	Super::BeginPlay();
-
+	pins.Init("", 20);
 	LoadPinData();
 }
 
@@ -59,7 +59,7 @@ void UTempCPU::SplitPinData()
 		
 		for (int i = 0; i < pins.Num(); i++) {
 		
-			Temp = "pin" + FString::FromInt(i + 1) + " :";
+			Temp = "pin" + FString::FromInt(i) + " :";
 
 			//UE_LOG(LogTemp, Warning, TEXT("%s"), *Temp);
 
@@ -77,8 +77,20 @@ void UTempCPU::SplitPinData()
 
 int UTempCPU::GetPinData(int pinNum, int loc) {
 
-	const TCHAR* p = *(pins[pinNum-1]);
-	int r;
+	if (pinNum <= -1 || pinNum > 19)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Pin num %i outside of range"), pinNum);
+		return 0;
+	} 
+
+	const TCHAR* p = *(pins[pinNum]);
+	int r = 0;
+
+	// if (*p == "")
+	// {
+	// 	UE_LOG(LogTemp, Warning, TEXT("No pin data found at pin num %i"), pinNum);
+	// 	r = 0;
+	// } else 
 	if (loc < 255 * TIMEFRAME)
 	{
 		r = p[loc] - '0';

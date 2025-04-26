@@ -6,10 +6,10 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "ReadWriteSample.generated.h"
 
-constexpr int32 MaxTimeframe = 10;
+constexpr int32 MaxTimeframe = 120;
 constexpr int32 MaxSpeed = 255;
 constexpr int32	Tick = 1; //This is ms per tick
-constexpr int32 Pins = 4;
+constexpr int32 Pins = 19;
 
 
 /**
@@ -40,9 +40,9 @@ class TRUDEMO_API UReadWriteSample : public UBlueprintFunctionLibrary
 
 		static void PinMode(const TArray<FString>& Para, TArray<int32>& pinActive, TArray<TArray<FString>>& VarStack);
 
-		static void AnalogWrite(const TArray<FString>& Para, TArray<int32>& pinSpeed, TArray<TArray<FString>>& VarStack);
+		static void AnalogWrite(const TArray<FString>& Para, TArray<int32>& pinSpeed, TArray<TArray<FString>>& VarStack, TArray<int32>& pinStatus);
 
-		static void DigitalWrite(const TArray<FString>& Para, TArray<int32>& pinStatus, TArray<TArray<FString>>& VarStack);
+		static void DigitalWrite(const TArray<FString>& Para, TArray<int32>& pinStatus, TArray<TArray<FString>>& VarStack, TArray<int32>& pinSpeed);
 
 		static void Delay(const TArray<FString>& Para, TArray<FString>& Package, TArray<FString>& PackageBits, 
 			int32& Time, int32& TickCount, TArray<int32>& PinStatus,
@@ -62,6 +62,10 @@ class TRUDEMO_API UReadWriteSample : public UBlueprintFunctionLibrary
 			TArray<FString>& SignalBits, TArray<int32>& PinSpeed, TArray<int32>& PinActive, FString& compileMessage);
 
 		static FString GetVar(const FString& VarName, TArray<TArray<FString>>& VarStack);
+
+		static int32 FindVar(const FString& VarName, TArray<TArray<FString>>& VarStack);
+
+		static void ChangeVar(const FString& VarName, const FString& VarVal, TArray<TArray<FString>>& VarStack);
 
 	GENERATED_BODY()
 	
