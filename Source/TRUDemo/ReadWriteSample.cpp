@@ -6,23 +6,48 @@
 #include "HAL/PlatformFileManager.h"
 #include "Misc/FileHelper.h"
 
-FString UReadWriteSample::ReadFromFile(FString filepath, FString& info) {
-    if (!FPlatformFileManager::Get().GetPlatformFile().FileExists(*filepath)) {
+FString UReadWriteSample::SaveUserInput(FString content) {
+    
+    FString dPath = FPaths::ProjectDir() + TEXT("userinput.txt");
+    if (FFileHelper::SaveStringToFile(content, *dPath)) {
+        return "Saved";
+    }
+    else {
+        return "Save failed";
+    }
+}
 
-        return	"File does not exist";
+FString UReadWriteSample::ReadUserInput(int option) {
+    FString dPath;
+    switch (option) {
+    case 1:
+        dPath = FPaths::ProjectDir() + TEXT("userinput.txt");
+        break;
+    case 2:
+        dPath = FPaths::ProjectDir() + TEXT("template.txt");
+        break;
+    case 3:
+        dPath = FPaths::ProjectDir() + TEXT("testrun.txt");
+        break;
+    default:
+        break;
+    }
+    
+    if (!FPlatformFileManager::Get().GetPlatformFile().FileExists(*dPath)) {
+
+        return	"Save not Found";
     }
     FString reading = "";
-    if (!FFileHelper::LoadFileToString(reading, *filepath)) {
+    if (!FFileHelper::LoadFileToString(reading, *dPath)) {
 
-        return "Load file failed";
+        return "Load failed";
     }
-    info = FString::Printf(TEXT("Read Done: %s"), *filepath);
-
     return reading;
 }
 
-FString UReadWriteSample::WriteToFile(FString filepath, FString content) {
-    FString input = "Orginal Input\n";
+FString UReadWriteSample::WriteToFile(FString content) {
+    FString userinput = SaveUserInput(content);
+;   FString input = "Orginal Input\n";
     input += content;
     //initalize all variable needed
     TMap<FString, TArray<FString>> FunctionDict;
@@ -33,8 +58,7 @@ FString UReadWriteSample::WriteToFile(FString filepath, FString content) {
     ParseFunction(Commands, FunctionDict, VarStack);
     //PrintFunctionDict(FunctionDict);
     //PrintVarArray(VarStack);
-    TArray<FString> packageResult, signalResult, packageBits, signalBits;
-    packageBits.SetNum(Pins);
+    TArray<FString> signalResult,signalBits;
     signalBits.SetNum(Pins);
     TArray<int32> pinStatus, pinActive, pinSpeed;
     pinStatus.Init(0, Pins);
@@ -43,8 +67,8 @@ FString UReadWriteSample::WriteToFile(FString filepath, FString content) {
     int32 TickCount = 0, Time = 0;
 
     //start setup here
-    CallFunction(TEXT("setup"), FunctionDict, VarStack, packageResult, packageBits,
-        Time, TickCount, pinStatus, signalResult, signalBits, pinSpeed, pinActive, complieMessage);
+    CallFunction(TEXT("setup"), FunctionDict, VarStack,Time, TickCount, pinStatus, 
+        signalResult, signalBits, pinSpeed, pinActive, complieMessage);
     input = "";
     for (const FString& Line : signalResult) {
         input += Line + LINE_TERMINATOR;
@@ -58,7 +82,7 @@ FString UReadWriteSample::WriteToFile(FString filepath, FString content) {
     return complieMessage;
 }
 
-void UReadWriteSample::ProgressTick(TArray<FString>& Package, TArray<FString>& PackageBits, int32& Time, int32& TickCount, TArray<int32>& PinStatus,
+void UReadWriteSample::ProgressTick(int32& Time, int32& TickCount, TArray<int32>& PinStatus,
     TArray<FString>& Signal, TArray<FString>& SignalBits, TArray<int32>& PinSpeed , TArray<int32>& PinActive) {
     if (Time == 0) {//header
         Signal.Add(FString("Signal output"));
@@ -92,6 +116,7 @@ void UReadWriteSample::ProgressTick(TArray<FString>& Package, TArray<FString>& P
     TickCount = 0;
 }
 
+//Helper function
 bool UReadWriteSample::IsNumeric(const FString& String)
 {
     for (TCHAR Char : String)
@@ -254,7 +279,7 @@ void UReadWriteSample::DigitalWrite(const TArray<FString>& Para, TArray<int32>& 
 
 }
 
-void UReadWriteSample::Delay(const TArray<FString>& Para,TArray<FString>& Package, TArray<FString>& PackageBits, int32& Time, int32& TickCount, TArray<int32>& PinStatus,
+void UReadWriteSample::Delay(const TArray<FString>& Para, int32& Time, int32& TickCount, TArray<int32>& PinStatus,
     TArray<FString>& Signal, TArray<FString>& SignalBits, TArray<int32>& PinSpeed, TArray<int32>& PinActive, TArray<TArray<FString>>& VarStack) {
 
     if (Para.Num() > 1) {
@@ -298,7 +323,7 @@ void UReadWriteSample::Delay(const TArray<FString>& Para,TArray<FString>& Packag
         }
         TickCount += 1;
         if (TickCount >= (1000 / Tick)) { //only if 1 full second has passed
-            ProgressTick(Package, PackageBits, Time, TickCount, PinStatus, Signal, SignalBits, PinSpeed, PinActive);
+            ProgressTick(Time, TickCount, PinStatus, Signal, SignalBits, PinSpeed, PinActive);
         }
         IntParameter = IntParameter - Tick;
     }
@@ -333,6 +358,7 @@ void UReadWriteSample::ParseFunction(const TArray<FString>& Command, TMap<FStrin
                 if (FunctionArray.Num() != 2) {
                     break;
                 }
+                //Name of function , content
                 FunctionDict.Add(FunctionArray[1], TArray<FString>());
                 FunctionDict.Add(FunctionArray[1]+TEXT("Var"), ParaArray);
             }
@@ -348,8 +374,7 @@ void UReadWriteSample::ParseFunction(const TArray<FString>& Command, TMap<FStrin
 
 
 void UReadWriteSample::CallFunction(const FString& FunctionNameIn, TMap<FString, TArray<FString>>& FunctionDict,
-    TArray<TArray<FString>>& VarStack, TArray<FString>& Package, TArray<FString>& PackageBits, 
-    int32& Time, int32& TickCount, TArray<int32>& PinStatus,TArray<FString>& Signal, 
+    TArray<TArray<FString>>& VarStack, int32& Time, int32& TickCount, TArray<int32>& PinStatus,TArray<FString>& Signal, 
     TArray<FString>& SignalBits, TArray<int32>& PinSpeed, TArray<int32>& PinActive, FString& compileMessage){
 
     if (FunctionDict.Contains(FunctionNameIn))
@@ -393,7 +418,7 @@ void UReadWriteSample::CallFunction(const FString& FunctionNameIn, TMap<FString,
                             }
                             else
                                 if (FunctionName.Equals("delay")) {
-                                    Delay(ParametersArray, Package, PackageBits, Time, TickCount,
+                                    Delay(ParametersArray,Time, TickCount,
                                         PinStatus, Signal, SignalBits, PinSpeed, PinActive, VarStack);
                                     UE_LOG(LogTemp, Log, TEXT("delay Called by %s"), *FunctionNameIn);
 
@@ -413,8 +438,8 @@ void UReadWriteSample::CallFunction(const FString& FunctionNameIn, TMap<FString,
                                                     PushVar(VarArray[i] + TEXT(" = ") + VarValue, VarStack);
                                                 }
                                             }
-                                            CallFunction(FunctionName, FunctionDict, VarStack, Package, PackageBits,
-                                                Time, TickCount, PinStatus, Signal, SignalBits, PinSpeed, PinActive,compileMessage);
+                                            CallFunction(FunctionName, FunctionDict, VarStack,Time, TickCount, PinStatus, 
+                                                Signal, SignalBits, PinSpeed, PinActive,compileMessage);
 
                                             PopVar(VarCount, VarStack);
                                         }
@@ -476,7 +501,7 @@ FString UReadWriteSample::GetVar(const FString& VarName, TArray<TArray<FString>>
     }
 }
 
-//Input VarName, return index in VarStack
+//Input VarName, return index in VarStack, helper function
 int32 UReadWriteSample::FindVar(const FString& VarName, TArray<TArray<FString>>& VarStack) {
     for (int i = VarStack.Num() - 1; i >= 0; i--) {
         if (VarStack[i][1].Equals(VarName)) {
@@ -498,6 +523,7 @@ void UReadWriteSample::ChangeVar(const FString& VarName, const FString& VarVal,T
     }
 
 }
+
 //Print out function
 void UReadWriteSample::PrintStringArray(const TArray<FString>& StringArray)
 {
