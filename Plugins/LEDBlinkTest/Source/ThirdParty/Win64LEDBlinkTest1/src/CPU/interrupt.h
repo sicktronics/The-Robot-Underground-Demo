@@ -1,4 +1,5 @@
 #include "CPU.h"
+#include "instruction.h" // For the delayNanoSec function
 #pragma once
 
 /*
