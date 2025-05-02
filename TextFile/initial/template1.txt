@@ -1,40 +1,38 @@
 // INA1, INA2
-byte leftForward = 3;
-byte leftBackward = 2;
+byte leftForward = XXX;
+byte leftBackward = XXX;
 // PWMA
-byte leftPWM = 10;
+byte leftPWM = XXX;
 
 
 // INB1, INB2
-byte rightForward = 4;
-byte rightBackward = 5;
+byte rightForward = XXX;
+byte rightBackward = XXX;
 // PWMB
-byte rightPWM = 19;
+byte rightPWM = XXX;
 
-// Other global variables
-int speed = 100;
+// Functions
 void driveForward(int time);
 void driveBackward(int time);
 void turnLeft(int time);
 void turnRight(int time);
 
+// Other global variables
+int speed = 150;
 
 void setup() {
-
   pinMode(leftBackward, OUTPUT);
   pinMode(leftForward, OUTPUT);
   pinMode(leftPWM, OUTPUT);
   pinMode(rightForward, OUTPUT);
   pinMode(rightBackward, OUTPUT);
   pinMode(rightPWM, OUTPUT);
-  int driveTime = 1000;
-  driveForward(driveTime);
-abcde();
+  // ...
  
 }
 
 void loop() {
-
+  // ...
 }
 
 void driveForward(int time){
@@ -43,6 +41,11 @@ void driveForward(int time){
   digitalWrite(leftBackward, LOW);
   digitalWrite(rightForward, HIGH);
   digitalWrite(rightBackward, LOW);
+
+  analogWrite(leftPWM, 200);
+  delay(500);
+  digitalWrite(rightForward, LOW);
+  digitalWrite(leftForward, LOW);
 
   // PWM VALUE CORRESPONDS TO SPEED (0-255)
   analogWrite(leftPWM, speed);
@@ -110,3 +113,4 @@ void turnRight(int time){
   analogWrite(leftPWM, 0);
   analogWrite(rightPWM, 0);
 }
+

@@ -20,19 +20,26 @@ class TRUDEMO_API UReadWriteSample : public UBlueprintFunctionLibrary
 {
 	
 	UFUNCTION(BlueprintCallable)
-		static FString ReadUserInput(int option);
+		static FString ReadUserInput(int option, int page);
 
 	UFUNCTION(BlueprintCallable)
 
-		static FString SaveUserInput(FString content);
+		static FString SaveUserInput(FString content, int option, int page);
 
 	UFUNCTION(BlueprintCallable)
 		static FString WriteToFile(FString Content);
+	UFUNCTION(BlueprintCallable)
+
+		static TArray<FString>LoadSaveHeader(int head, int page);
+
+
 		static void ProgressTick(int32& Time, int32& TickCount, TArray<int32>& PinStatus, 
 			TArray<FString>& Signal, TArray<FString>& SignalBits, 
 			TArray<int32>& PinSpeed, TArray<int32>& PinActive);
 
 		static bool IsNumeric(const FString& String);
+
+		static int32 AutoIndex();
 
 		static TArray<FString> cleanInput(const FString& Input);
 

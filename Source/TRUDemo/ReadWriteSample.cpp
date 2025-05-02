@@ -5,34 +5,98 @@
 
 #include "HAL/PlatformFileManager.h"
 #include "Misc/FileHelper.h"
+#include "Misc/DateTime.h"
 
-FString UReadWriteSample::SaveUserInput(FString content) {
-    
-    FString dPath = FPaths::ProjectDir() + TEXT("userinput.txt");
+//SL function
+FString UReadWriteSample::SaveUserInput(FString content, int option, int page) {
+    FDateTime Now = FDateTime::Now();
+    FString TimeString = Now.ToString();
+    FString dPath;    
+
+    dPath = FString::Format(
+        TEXT("{0}{1}"),
+        { FPaths::ProjectDir(),TEXT("TextFile/savefilehead.txt") }
+    );
+    FString reading = "";
+    TArray<FString> Commands;
+    FFileHelper::LoadFileToString(reading, *dPath);
+    reading.ParseIntoArrayLines(Commands, true);
+    for (int i = page *6; i < page*6 +6; i++) {
+        if (i == page * 6 + option - 1) {
+            Commands[i] = TimeString;
+        }
+    }
+    FString input = "";
+    for (const FString& Line : Commands) {
+        input += Line + LINE_TERMINATOR;
+    }
+    FFileHelper::SaveStringToFile(input, *dPath);
+
+    dPath = FString::Format(
+        TEXT("{0}{1}{2}{3}"),
+        { FPaths::ProjectDir(),TEXT("TextFile/userinput"),page*6 +option,TEXT(".txt")}
+    );
     if (FFileHelper::SaveStringToFile(content, *dPath)) {
-        return "Saved";
+        return "Save success";
     }
     else {
         return "Save failed";
     }
 }
 
-FString UReadWriteSample::ReadUserInput(int option) {
+//Template default page number = 0
+TArray<FString> UReadWriteSample::LoadSaveHeader(int head, int page) {
     FString dPath;
-    switch (option) {
-    case 1:
-        dPath = FPaths::ProjectDir() + TEXT("userinput.txt");
-        break;
-    case 2:
-        dPath = FPaths::ProjectDir() + TEXT("template.txt");
-        break;
-    case 3:
-        dPath = FPaths::ProjectDir() + TEXT("testrun.txt");
-        break;
-    default:
-        break;
+    if (head == 0) {
+        dPath = FString::Format(
+            TEXT("{0}{1}"),
+            { FPaths::ProjectDir(),TEXT("TextFile/savefilehead.txt") }
+        );
     }
-    
+    else {
+        dPath = FString::Format(
+            TEXT("{0}{1}"),
+            { FPaths::ProjectDir(),TEXT("TextFile/templatedesc.txt") }
+        );
+    }
+
+    FString reading = "";
+    TArray<FString> Commands;
+    FFileHelper::LoadFileToString(reading, *dPath);
+    reading.ParseIntoArrayLines(Commands, true);
+    for (FString& Line : Commands)
+    {
+        Line = Line.TrimStartAndEnd();
+    }
+    TArray<FString> OnePage;
+
+    int32 StartIndex = page *6;
+    int32 EndIndex = StartIndex +5;
+
+    for (int32 i = StartIndex; i <= EndIndex && i < Commands.Num(); ++i)
+    {
+        OnePage.Add(Commands[i]);
+    }
+
+    return OnePage;
+}
+
+//1-6 for saves, 7-12 for template
+FString UReadWriteSample::ReadUserInput(int option, int page) {
+    FString dPath;
+    if (option < 6) {
+        dPath = FString::Format(
+            TEXT("{0}{1}{2}{3}"),
+            { FPaths::ProjectDir(),TEXT("TextFile/userinput"),page*6+option,TEXT(".txt") }
+        );
+    }
+    else {
+        option -= 6;
+        dPath = FString::Format(
+            TEXT("{0}{1}{2}{3}"),
+            { FPaths::ProjectDir(),TEXT("TextFile/template"),option,TEXT(".txt") }
+        );
+    }    
     if (!FPlatformFileManager::Get().GetPlatformFile().FileExists(*dPath)) {
 
         return	"Save not Found";
@@ -45,10 +109,27 @@ FString UReadWriteSample::ReadUserInput(int option) {
     return reading;
 }
 
+//Autosave from 1 to 6, load index
+int32 UReadWriteSample::AutoIndex() {
+    FString dPath = FString::Format(
+        TEXT("{0}{1}"),
+        { FPaths::ProjectDir(),TEXT("TextFile/autosaveindex.txt") }
+    );
+    FString reading = "";
+    FFileHelper::LoadFileToString(reading, *dPath);
+    int32 index;
+    index = FCString::Atoi(*reading.TrimStartAndEnd());
+    index = index % 6 +1;
+    reading = FString::FromInt(index);
+    FFileHelper::SaveStringToFile(reading, *dPath);
+    return index;
+}
+
+
+//The actual compiler
 FString UReadWriteSample::WriteToFile(FString content) {
-    FString userinput = SaveUserInput(content);
-;   FString input = "Orginal Input\n";
-    input += content;
+    int32 index = AutoIndex();
+    FString userinput = SaveUserInput(content,index,0);
     //initalize all variable needed
     TMap<FString, TArray<FString>> FunctionDict;
     TArray<TArray<FString>> VarStack;
@@ -69,7 +150,7 @@ FString UReadWriteSample::WriteToFile(FString content) {
     //start setup here
     CallFunction(TEXT("setup"), FunctionDict, VarStack,Time, TickCount, pinStatus, 
         signalResult, signalBits, pinSpeed, pinActive, complieMessage);
-    input = "";
+    FString input = "";
     for (const FString& Line : signalResult) {
         input += Line + LINE_TERMINATOR;
     }
@@ -298,14 +379,6 @@ void UReadWriteSample::Delay(const TArray<FString>& Para, int32& Time, int32& Ti
 
     UE_LOG(LogTemp, Log, TEXT("delay run by %d , t = %d"), IntParameter, Time);
     while (IntParameter > 0) {
-        //for (int i = 0; i < Pins; i++) {
-        //    if (PinActive[i] == 1) {
-        //        PackageBits[i] += FString::FromInt(PinStatus[i]);
-        //    }
-        //    else {
-        //        PackageBits[i] += "0";
-        //    }
-        //}
         for (int i = 0; i < Pins; i++) {
             for (int j = 0; j < MaxSpeed; j++) {
                 if (PinActive[i] == 1) {
@@ -444,7 +517,8 @@ void UReadWriteSample::CallFunction(const FString& FunctionNameIn, TMap<FString,
                                             PopVar(VarCount, VarStack);
                                         }
                                         else {
-                                            UE_LOG(LogTemp, Log, TEXT("Function variable mismatch or missing : "));
+                                            compileMessage = TEXT("Function variable mismatch or missing : " + FunctionName);
+                                            UE_LOG(LogTemp, Log, TEXT("Function variable mismatch or missing"));
                                         }
                                     }
                                     else {
@@ -472,7 +546,11 @@ void UReadWriteSample::PushVar(const FString& Command, TArray<TArray<FString>>& 
     FString assign = ParametersArray[0].TrimStartAndEnd();
     FString val = ParametersArray[1].TrimStartAndEnd();
     val = val.Replace(TEXT(";"), TEXT("")).TrimStartAndEnd();
+    if (!IsNumeric(val)) {
+        val = GetVar(val,VarStack);
+    }
     assign.ParseIntoArray(ParametersArray, TEXT(" "), true);
+    //Declare or change
     if (ParametersArray.Num() == 1) {
         ChangeVar(ParametersArray[0], val, VarStack);
     }
@@ -518,10 +596,6 @@ void UReadWriteSample::ChangeVar(const FString& VarName, const FString& VarVal,T
     if (varIndex >= 0) {
         VarStack[varIndex][2] = VarVal;
     }
-    else
-    {
-    }
-
 }
 
 //Print out function
