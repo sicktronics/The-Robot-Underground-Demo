@@ -49,20 +49,20 @@ class TRUDEMO_API UReadWriteSample : public UBlueprintFunctionLibrary
 
 		static void PrintVarArray(const TArray<TArray<FString>>& VarArray);
 
-		static void PinMode(const TArray<FString>& Para, TArray<int32>& pinActive, TArray<TArray<FString>>& VarStack);
+		static void PinMode(const TArray<FString>& Para, TArray<int32>& pinActive, TArray<TArray<FString>>& VarStack, FString& compileMessage);
 
-		static void AnalogWrite(const TArray<FString>& Para, TArray<int32>& pinSpeed, TArray<TArray<FString>>& VarStack, TArray<int32>& pinStatus);
+		static void AnalogWrite(const TArray<FString>& Para, TArray<int32>& pinSpeed, TArray<TArray<FString>>& VarStack, TArray<int32>& pinStatus, FString& compileMessage);
 
-		static void DigitalWrite(const TArray<FString>& Para, TArray<int32>& pinStatus, TArray<TArray<FString>>& VarStack, TArray<int32>& pinSpeed);
+		static void DigitalWrite(const TArray<FString>& Para, TArray<int32>& pinStatus, TArray<TArray<FString>>& VarStack, TArray<int32>& pinSpeed, FString& compileMessage);
 
 		static void Delay(const TArray<FString>& Para, int32& Time, int32& TickCount, 
 			TArray<int32>& PinStatus,TArray<FString>& Signal, TArray<FString>& SignalBits, TArray<int32>& PinSpeed, 
-			TArray<int32>& PinActive, TArray<TArray<FString>>& VarStack);
+			TArray<int32>& PinActive, TArray<TArray<FString>>& VarStack, FString& compileMessage);
 
 		static void ParseFunction(const TArray<FString>& Command, TMap<FString, TArray<FString>>& FunctionDict, 
-			TArray<TArray<FString>>& VarStack);
+			TArray<TArray<FString>>& VarStack, FString& compileMessage);
 		
-		static void PushVar(const FString& Command, TArray<TArray<FString>>& VarStack);
+		static void PushVar(const FString& Command, TArray<TArray<FString>>& VarStack, FString& compileMessage);
 
 		static void PopVar(int& VarCount, TArray<TArray<FString>>& VarStack);
 
@@ -70,11 +70,11 @@ class TRUDEMO_API UReadWriteSample : public UBlueprintFunctionLibrary
 			TArray<TArray<FString>>& VarStack, int32& Time, int32& TickCount, TArray<int32>& PinStatus,TArray<FString>& Signal, 
 			TArray<FString>& SignalBits, TArray<int32>& PinSpeed, TArray<int32>& PinActive, FString& compileMessage);
 
-		static FString GetVar(const FString& VarName, TArray<TArray<FString>>& VarStack);
+		static FString GetVar(const FString& VarName, TArray<TArray<FString>>& VarStack, FString& compileMessage);
 
-		static int32 FindVar(const FString& VarName, TArray<TArray<FString>>& VarStack);
+		static int32 FindVar(const FString& VarName, TArray<TArray<FString>>& VarStack, FString& compileMessage);
 
-		static void ChangeVar(const FString& VarName, const FString& VarVal, TArray<TArray<FString>>& VarStack);
+		static void ChangeVar(const FString& VarName, const FString& VarVal, TArray<TArray<FString>>& VarStack, FString& compileMessage);
 
 	GENERATED_BODY()
 	
