@@ -10,6 +10,9 @@
 /.vs
 .vsconfig
 
+# git plugin
+/Plugins/UEGitPlugin-*/*
+
 # compiled stuff we probably don't want
 *.lib
 *.dll
