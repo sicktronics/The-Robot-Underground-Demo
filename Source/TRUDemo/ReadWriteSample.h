@@ -20,12 +20,16 @@ class TRUDEMO_API UReadWriteSample : public UBlueprintFunctionLibrary
 {
 	
 	UFUNCTION(BlueprintCallable)
-		static FString ReadFromFile(FString filepath, FString& info);
+		static FString ReadUserInput(int option);
 
 	UFUNCTION(BlueprintCallable)
-		static FString WriteToFile(FString filepath, FString Content);
-		static void ProgressTick(TArray<FString>& Package, TArray<FString>& PackageBits, int32& Time, 
-			int32& TickCount, TArray<int32>& PinStatus, TArray<FString>& Signal, TArray<FString>& SignalBits, 
+
+		static FString SaveUserInput(FString content);
+
+	UFUNCTION(BlueprintCallable)
+		static FString WriteToFile(FString Content);
+		static void ProgressTick(int32& Time, int32& TickCount, TArray<int32>& PinStatus, 
+			TArray<FString>& Signal, TArray<FString>& SignalBits, 
 			TArray<int32>& PinSpeed, TArray<int32>& PinActive);
 
 		static bool IsNumeric(const FString& String);
@@ -44,9 +48,8 @@ class TRUDEMO_API UReadWriteSample : public UBlueprintFunctionLibrary
 
 		static void DigitalWrite(const TArray<FString>& Para, TArray<int32>& pinStatus, TArray<TArray<FString>>& VarStack, TArray<int32>& pinSpeed);
 
-		static void Delay(const TArray<FString>& Para, TArray<FString>& Package, TArray<FString>& PackageBits, 
-			int32& Time, int32& TickCount, TArray<int32>& PinStatus,
-			TArray<FString>& Signal, TArray<FString>& SignalBits, TArray<int32>& PinSpeed, 
+		static void Delay(const TArray<FString>& Para, int32& Time, int32& TickCount, 
+			TArray<int32>& PinStatus,TArray<FString>& Signal, TArray<FString>& SignalBits, TArray<int32>& PinSpeed, 
 			TArray<int32>& PinActive, TArray<TArray<FString>>& VarStack);
 
 		static void ParseFunction(const TArray<FString>& Command, TMap<FString, TArray<FString>>& FunctionDict, 
@@ -57,8 +60,7 @@ class TRUDEMO_API UReadWriteSample : public UBlueprintFunctionLibrary
 		static void PopVar(int& VarCount, TArray<TArray<FString>>& VarStack);
 
 		static void CallFunction(const FString& FunctionNameIn, TMap<FString, TArray<FString>>& FunctionDict,
-			TArray<TArray<FString>>& VarStack, TArray<FString>& Package, TArray<FString>& PackageBits,
-			int32& Time, int32& TickCount, TArray<int32>& PinStatus,TArray<FString>& Signal, 
+			TArray<TArray<FString>>& VarStack, int32& Time, int32& TickCount, TArray<int32>& PinStatus,TArray<FString>& Signal, 
 			TArray<FString>& SignalBits, TArray<int32>& PinSpeed, TArray<int32>& PinActive, FString& compileMessage);
 
 		static FString GetVar(const FString& VarName, TArray<TArray<FString>>& VarStack);
