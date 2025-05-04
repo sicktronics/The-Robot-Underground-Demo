@@ -20,19 +20,26 @@ class TRUDEMO_API UReadWriteSample : public UBlueprintFunctionLibrary
 {
 	
 	UFUNCTION(BlueprintCallable)
-		static FString ReadUserInput(int option);
+		static FString ReadUserInput(int option, int page);
 
 	UFUNCTION(BlueprintCallable)
 
-		static FString SaveUserInput(FString content);
+		static FString SaveUserInput(FString content, int option, int page);
 
 	UFUNCTION(BlueprintCallable)
 		static FString WriteToFile(FString Content);
+	UFUNCTION(BlueprintCallable)
+
+		static TArray<FString>LoadSaveHeader(int head, int page);
+
+
 		static void ProgressTick(int32& Time, int32& TickCount, TArray<int32>& PinStatus, 
 			TArray<FString>& Signal, TArray<FString>& SignalBits, 
 			TArray<int32>& PinSpeed, TArray<int32>& PinActive);
 
 		static bool IsNumeric(const FString& String);
+
+		static int32 AutoIndex();
 
 		static TArray<FString> cleanInput(const FString& Input);
 
@@ -42,20 +49,20 @@ class TRUDEMO_API UReadWriteSample : public UBlueprintFunctionLibrary
 
 		static void PrintVarArray(const TArray<TArray<FString>>& VarArray);
 
-		static void PinMode(const TArray<FString>& Para, TArray<int32>& pinActive, TArray<TArray<FString>>& VarStack);
+		static void PinMode(const TArray<FString>& Para, TArray<int32>& pinActive, TArray<TArray<FString>>& VarStack, FString& compileMessage);
 
-		static void AnalogWrite(const TArray<FString>& Para, TArray<int32>& pinSpeed, TArray<TArray<FString>>& VarStack, TArray<int32>& pinStatus);
+		static void AnalogWrite(const TArray<FString>& Para, TArray<int32>& pinSpeed, TArray<TArray<FString>>& VarStack, TArray<int32>& pinStatus, FString& compileMessage);
 
-		static void DigitalWrite(const TArray<FString>& Para, TArray<int32>& pinStatus, TArray<TArray<FString>>& VarStack, TArray<int32>& pinSpeed);
+		static void DigitalWrite(const TArray<FString>& Para, TArray<int32>& pinStatus, TArray<TArray<FString>>& VarStack, TArray<int32>& pinSpeed, FString& compileMessage);
 
 		static void Delay(const TArray<FString>& Para, int32& Time, int32& TickCount, 
 			TArray<int32>& PinStatus,TArray<FString>& Signal, TArray<FString>& SignalBits, TArray<int32>& PinSpeed, 
-			TArray<int32>& PinActive, TArray<TArray<FString>>& VarStack);
+			TArray<int32>& PinActive, TArray<TArray<FString>>& VarStack, FString& compileMessage);
 
 		static void ParseFunction(const TArray<FString>& Command, TMap<FString, TArray<FString>>& FunctionDict, 
-			TArray<TArray<FString>>& VarStack);
+			TArray<TArray<FString>>& VarStack, FString& compileMessage);
 		
-		static void PushVar(const FString& Command, TArray<TArray<FString>>& VarStack);
+		static void PushVar(const FString& Command, TArray<TArray<FString>>& VarStack, FString& compileMessage);
 
 		static void PopVar(int& VarCount, TArray<TArray<FString>>& VarStack);
 
@@ -63,11 +70,11 @@ class TRUDEMO_API UReadWriteSample : public UBlueprintFunctionLibrary
 			TArray<TArray<FString>>& VarStack, int32& Time, int32& TickCount, TArray<int32>& PinStatus,TArray<FString>& Signal, 
 			TArray<FString>& SignalBits, TArray<int32>& PinSpeed, TArray<int32>& PinActive, FString& compileMessage);
 
-		static FString GetVar(const FString& VarName, TArray<TArray<FString>>& VarStack);
+		static FString GetVar(const FString& VarName, TArray<TArray<FString>>& VarStack, FString& compileMessage);
 
-		static int32 FindVar(const FString& VarName, TArray<TArray<FString>>& VarStack);
+		static int32 FindVar(const FString& VarName, TArray<TArray<FString>>& VarStack, FString& compileMessage);
 
-		static void ChangeVar(const FString& VarName, const FString& VarVal, TArray<TArray<FString>>& VarStack);
+		static void ChangeVar(const FString& VarName, const FString& VarVal, TArray<TArray<FString>>& VarStack, FString& compileMessage);
 
 	GENERATED_BODY()
 	
