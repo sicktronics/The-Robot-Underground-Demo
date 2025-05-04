@@ -14,7 +14,6 @@ public class TRUDemo : ModuleRules
 		// LEDBlinkTest internally includes the static library per its own .Build.cs
 		PrivateDependencyModuleNames.AddRange(new string[] { "LEDBlinkTest" });
 
-
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
 		
