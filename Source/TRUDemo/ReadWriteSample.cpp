@@ -15,7 +15,7 @@ FString UReadWriteSample::SaveUserInput(FString content, int option, int page) {
 
     dPath = FString::Format(
         TEXT("{0}{1}"),
-        { FPaths::ProjectDir(),TEXT("TextFile/savefilehead.txt") }
+        { FPaths::ProjectContentDir(),TEXT("TextFile/savefilehead.txt") }
     );
     FString reading = "";
     TArray<FString> Commands;
@@ -34,7 +34,7 @@ FString UReadWriteSample::SaveUserInput(FString content, int option, int page) {
 
     dPath = FString::Format(
         TEXT("{0}{1}{2}{3}"),
-        { FPaths::ProjectDir(),TEXT("TextFile/userinput"),page*6 +option,TEXT(".txt")}
+        { FPaths::ProjectContentDir(),TEXT("TextFile/userinput"),page*6 +option,TEXT(".txt")}
     );
     if (FFileHelper::SaveStringToFile(content, *dPath)) {
         return "Save success";
@@ -50,13 +50,13 @@ TArray<FString> UReadWriteSample::LoadSaveHeader(int head, int page) {
     if (head == 0) {
         dPath = FString::Format(
             TEXT("{0}{1}"),
-            { FPaths::ProjectDir(),TEXT("TextFile/savefilehead.txt") }
+            { FPaths::ProjectContentDir(),TEXT("TextFile/savefilehead.txt") }
         );
     }
     else {
         dPath = FString::Format(
             TEXT("{0}{1}"),
-            { FPaths::ProjectDir(),TEXT("TextFile/templatedesc.txt") }
+            { FPaths::ProjectContentDir(),TEXT("TextFile/templatedesc.txt") }
         );
     }
 
@@ -87,14 +87,14 @@ FString UReadWriteSample::ReadUserInput(int option, int page) {
     if (option < 6) {
         dPath = FString::Format(
             TEXT("{0}{1}{2}{3}"),
-            { FPaths::ProjectDir(),TEXT("TextFile/userinput"),page*6+option,TEXT(".txt") }
+            { FPaths::ProjectContentDir(),TEXT("TextFile/userinput"),page*6+option,TEXT(".txt") }
         );
     }
     else {
         option -= 6;
         dPath = FString::Format(
             TEXT("{0}{1}{2}{3}"),
-            { FPaths::ProjectDir(),TEXT("TextFile/template"),option,TEXT(".txt") }
+            { FPaths::ProjectContentDir(),TEXT("TextFile/template"),option,TEXT(".txt") }
         );
     }    
     if (!FPlatformFileManager::Get().GetPlatformFile().FileExists(*dPath)) {
@@ -113,7 +113,7 @@ FString UReadWriteSample::ReadUserInput(int option, int page) {
 int32 UReadWriteSample::AutoIndex() {
     FString dPath = FString::Format(
         TEXT("{0}{1}"),
-        { FPaths::ProjectDir(),TEXT("TextFile/autosaveindex.txt") }
+        { FPaths::ProjectContentDir(),TEXT("TextFile/autosaveindex.txt") }
     );
     FString reading = "";
     FFileHelper::LoadFileToString(reading, *dPath);
@@ -154,7 +154,7 @@ FString UReadWriteSample::WriteToFile(FString content) {
     for (const FString& Line : signalResult) {
         input += Line + LINE_TERMINATOR;
     }
-    FString dPath = FPaths::ProjectDir() + TEXT("signal.txt");
+    FString dPath = FPaths::ProjectContentDir() + TEXT("signal.txt");
     if (FFileHelper::SaveStringToFile(input, *dPath)) {
         return complieMessage;
     }
