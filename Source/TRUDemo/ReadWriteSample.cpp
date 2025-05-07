@@ -154,7 +154,7 @@ FString UReadWriteSample::WriteToFile(FString content) {
     for (const FString& Line : signalResult) {
         input += Line + LINE_TERMINATOR;
     }
-    FString dPath = FPaths::ProjectContentDir() + TEXT("signal.txt");
+    FString dPath = FPaths::ProjectContentDir() + TEXT("TextFile/signal.txt");
     if (FFileHelper::SaveStringToFile(input, *dPath)) {
         return complieMessage;
     }
