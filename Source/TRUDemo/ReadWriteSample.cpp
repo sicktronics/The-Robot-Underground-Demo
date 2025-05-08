@@ -197,18 +197,6 @@ void UReadWriteSample::ProgressTick(int32& Time, int32& TickCount, TArray<int32>
     TickCount = 0;
 }
 
-//Helper function
-bool UReadWriteSample::IsNumeric(const FString& String)
-{
-    for (TCHAR Char : String)
-    {
-        if (!FChar::IsDigit(Char)) // Checks if each character is a digit
-        {
-            return false;
-        }
-    }
-    return true;
-}
  
 TArray<FString> UReadWriteSample::cleanInput(const FString& Input) {
     TArray<FString> Commands, RawCommands;
@@ -281,7 +269,7 @@ TArray<FString> UReadWriteSample::cleanInput(const FString& Input) {
     return Commands;
 }
 
-void UReadWriteSample::PinMode(const TArray<FString>& Para, TArray<int32>& pinActive, TArray<TArray<FString>>& VarStack, FString& compileMessage) {
+void UReadWriteSample::PinMode(TArray<FString>& Para, TArray<int32>& pinActive, TArray<TArray<FString>>& VarStack, FString& compileMessage) {
     if (Para.Num() > 2) {
         return;
     }
@@ -296,7 +284,7 @@ void UReadWriteSample::PinMode(const TArray<FString>& Para, TArray<int32>& pinAc
     }    
 }
 
-void UReadWriteSample::AnalogWrite(const TArray<FString>& Para, TArray<int32>& pinSpeed, TArray<TArray<FString>>& VarStack, TArray<int32>& pinStatus, FString& compileMessage) {
+void UReadWriteSample::AnalogWrite(TArray<FString>& Para, TArray<int32>& pinSpeed, TArray<TArray<FString>>& VarStack, TArray<int32>& pinStatus, FString& compileMessage) {
     if (Para.Num() > 2) {
         return;
     }
@@ -324,7 +312,7 @@ void UReadWriteSample::AnalogWrite(const TArray<FString>& Para, TArray<int32>& p
 
 }
 
-void UReadWriteSample::DigitalWrite(const TArray<FString>& Para, TArray<int32>& pinStatus, TArray<TArray<FString>>& VarStack, TArray<int32>& pinSpeed, FString& compileMessage) {
+void UReadWriteSample::DigitalWrite(TArray<FString>& Para, TArray<int32>& pinStatus, TArray<TArray<FString>>& VarStack, TArray<int32>& pinSpeed, FString& compileMessage) {
     if (Para.Num() > 2) {
         return;
     }
@@ -360,7 +348,7 @@ void UReadWriteSample::DigitalWrite(const TArray<FString>& Para, TArray<int32>& 
 
 }
 
-void UReadWriteSample::Delay(const TArray<FString>& Para, int32& Time, int32& TickCount, TArray<int32>& PinStatus,
+void UReadWriteSample::Delay(TArray<FString>& Para, int32& Time, int32& TickCount, TArray<int32>& PinStatus,
     TArray<FString>& Signal, TArray<FString>& SignalBits, TArray<int32>& PinSpeed, TArray<int32>& PinActive, 
     TArray<TArray<FString>>& VarStack, FString& compileMessage) {
 
@@ -548,7 +536,7 @@ void UReadWriteSample::PushVar(const FString& Command, TArray<TArray<FString>>& 
     FString val = ParametersArray[1].TrimStartAndEnd();
     val = val.Replace(TEXT(";"), TEXT("")).TrimStartAndEnd();
     if (!IsNumeric(val)) {
-        val = GetVar(val,VarStack, compileMessage);
+        val = GetVar(val,VarStack, compileMessage);  
     }
     assign.ParseIntoArray(ParametersArray, TEXT(" "), true);
     //Declare or change
@@ -568,16 +556,24 @@ void UReadWriteSample::PopVar(int& VarCount, TArray<TArray<FString>>& VarStack) 
 
 }
 
-//VarName to look for value, return the string if found, or return empty string
-FString UReadWriteSample::GetVar(const FString& VarName, TArray<TArray<FString>>& VarStack, FString& compileMessage) {
-    int varIndex = FindVar(VarName,VarStack, compileMessage);
-    if (varIndex  >= 0) {
+//VarName is the entire expression right of =
+//Return val if not math
+//
+FString UReadWriteSample::GetVar(FString& VarName, TArray<TArray<FString>>& VarStack, FString& compileMessage) {
+    if (IsMath(VarName)) {
+        VarName = MathOp(VarName,VarStack,compileMessage);
+        //VarName resolved as the value given by the entire mathop
+        return VarName;
+    }
+    int varIndex = FindVar(VarName, VarStack, compileMessage);
+    if (varIndex >= 0) {
         return VarStack[varIndex][2];
     }
     else
     {
         return "";
     }
+
 }
 
 //Input VarName, return index in VarStack, helper function
@@ -599,6 +595,53 @@ void UReadWriteSample::ChangeVar(const FString& VarName, const FString& VarVal,T
         VarStack[varIndex][2] = VarVal;
     }
 }
+
+
+FString UReadWriteSample::MathOp(FString& VarName, TArray<TArray<FString>>& VarStack ,FString& compileMessage) {
+    TArray<FString> ParametersArray = SplitMathOp(VarName);
+    //UE_LOG(LogTemp, Log, TEXT("Printing Operation: %s"), *VarName);
+    for (FString& Parameter : ParametersArray) {
+        if (!IsNumeric(Parameter)) {
+            Parameter = GetVar(Parameter, VarStack, compileMessage);
+        }
+    }
+
+    TArray<TCHAR> OutOps;
+    for (TCHAR C : VarName)
+    {
+        if (C == '+' || C == '-' || C == '*' || C == '/' || C == '%')
+        {
+            OutOps.Add(C);
+        }
+    }
+    for (int i = OutOps.Num() - 1; i >=0; i--) {
+        if (OutOps[i] == '*') {
+            ParametersArray[i] = FString::SanitizeFloat((FCString::Atof(*ParametersArray[i]) * FCString::Atof(*ParametersArray[i + 1])),0);
+            OutOps.RemoveAt(i);
+            ParametersArray.RemoveAt(i + 1);
+        }else
+        if ( OutOps[i] == '/') {
+            ParametersArray[i] = FString::SanitizeFloat((FCString::Atof(*ParametersArray[i]) / FCString::Atof(*ParametersArray[i + 1])),0);
+            OutOps.RemoveAt(i);
+            ParametersArray.RemoveAt(i + 1);
+        }
+    }
+    for (int i = OutOps.Num() - 1; i >= 0; i--) {
+        if (OutOps[i] == '+') {
+            ParametersArray[i] = FString::SanitizeFloat((FCString::Atof(*ParametersArray[i]) + FCString::Atof(*ParametersArray[i + 1])),0);
+            OutOps.RemoveAt(i);
+            ParametersArray.RemoveAt(i + 1);
+        }else
+        if (OutOps[i] == '-') {
+            ParametersArray[i] = FString::SanitizeFloat((FCString::Atof(*ParametersArray[i]) - FCString::Atof(*ParametersArray[i + 1])),0);
+            OutOps.RemoveAt(i);
+            ParametersArray.RemoveAt(i + 1);
+        }
+    }
+
+    return ParametersArray[0];
+}
+
 
 //Print out function
 void UReadWriteSample::PrintStringArray(const TArray<FString>& StringArray)
@@ -635,4 +678,73 @@ void UReadWriteSample::PrintVarArray(const TArray<TArray<FString>>& VarArray)
         FString RowData = FString::Join(VarArray[RowIndex], TEXT(", "));
         UE_LOG(LogTemp, Log, TEXT("Row %d: [%s]"), RowIndex, *RowData);
     }
+}
+
+//Helper function
+bool UReadWriteSample::IsNumeric(const FString& String)
+{
+    for (TCHAR Char : String)
+    {
+        if (!FChar::IsDigit(Char)) // Checks if each character is a digit
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+//Return true if it is a math operation
+bool UReadWriteSample::IsMath(const FString& String) {
+    for (TCHAR Char : String)
+    {
+        switch (Char)
+        {
+        case '+':
+        case '-':
+        case '*':
+        case '/':
+        case '%':
+            return true;
+        default:
+            break;
+        }
+    }
+    return false;
+}
+
+
+TArray<FString> UReadWriteSample::SplitMathOp(const FString& InString) {
+    TArray<FString> OutValues;
+    int32 LastPos = 0;
+    const int32 Len = InString.Len();
+
+    for (int32 i = 0; i < Len; ++i)
+    {
+        TCHAR C = InString[i];
+        if (C == '+' || C == '-' || C == '*' || C == '/' || C == '%')
+        {
+            // add substring before this operator (if any)
+            if (i > LastPos)
+            {
+                FString Chunk = InString.Mid(LastPos, i - LastPos).TrimStartAndEnd();
+                if (!Chunk.IsEmpty())
+                {
+                    OutValues.Add(Chunk);
+                }
+            }
+            LastPos = i + 1;
+        }
+    }
+
+    // add the final tail chunk
+    if (LastPos < Len)
+    {
+        FString Chunk = InString.Mid(LastPos).TrimStartAndEnd();
+        if (!Chunk.IsEmpty())
+        {
+            OutValues.Add(Chunk);
+        }
+    }
+
+    return OutValues;
 }

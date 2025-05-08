@@ -12,7 +12,7 @@ byte rightBackward = 5;
 byte rightPWM = 6;
 
 // Other global variables
-int speed = 255;
+int speed = 100;
 void driveForward(int time);
 void driveBackward(int time);
 void turnLeft(int time);
@@ -27,7 +27,9 @@ void setup() {
   pinMode(rightForward, OUTPUT);
   pinMode(rightBackward, OUTPUT);
   pinMode(rightPWM, OUTPUT);
-  int driveTime = 4000;
+  int driveTime = 1000+1000;
+  driveForward(driveTime);
+delay(driveTime-1000);
   driveForward(driveTime);
  
 }
