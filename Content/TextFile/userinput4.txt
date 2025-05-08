@@ -12,7 +12,7 @@ byte rightBackward = 5;
 byte rightPWM = 6;
 
 // Other global variables
-int speed = 255;
+int speed = 100;
 void driveForward(int time);
 void driveBackward(int time);
 void turnLeft(int time);

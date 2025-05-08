@@ -25,6 +25,10 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Core")
 	FString filename = "signal.txt";
 
+	// The path to the /Content folder, where signal files live
+	UPROPERTY(EditAnywhere, Category = "Core")
+	FString pathToFile = "Content/TextFile/";
+
 	//UPROPERTY(EditAnywhere, Category = "Runtime Connection List")
 	TArray<FString> pins;
 
