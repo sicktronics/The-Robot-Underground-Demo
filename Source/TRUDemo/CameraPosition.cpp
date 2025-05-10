@@ -22,11 +22,12 @@ static T* GetComponentByClass(AActor* Actor)
 
 
 // Called when the game starts
-void UCameraPosition::BeginPlay()
-{
+void UCameraPosition::BeginPlay() {
 	Super::BeginPlay();
+}
+
+void UCameraPosition::InitConnections() {
 	if (IsValid(connectedCameraPosition)) {
-		
 		if (GetComponentByClass<UCameraPosition>(connectedCameraPosition)->bindPath(connectionInputDirection, this) == 0) {
 
 			bindPath(5 - connectionInputDirection, GetComponentByClass<UCameraPosition>(connectedCameraPosition));
@@ -37,9 +38,7 @@ void UCameraPosition::BeginPlay()
 	} 
 	else {
 		UE_LOG(LogTemp, Warning, TEXT("connected Camera Position is null pointer: from CameraPosition %s"), *stateLabel);
-
 	}
-	
 }
 
 
