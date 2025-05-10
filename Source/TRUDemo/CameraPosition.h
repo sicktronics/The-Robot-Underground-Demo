@@ -9,6 +9,15 @@
 #include "CameraPosition.generated.h"
 
 
+// Needs these specific values for reciprocity (4-val) to be the opposite dir
+UENUM(BlueprintType)
+enum class CameraDirection : uint8 {
+	DOWN = 0   UMETA(DisplayName = "DOWN"),
+	LEFT = 1   UMETA(DisplayName = "LEFT"),
+	RIGHT = 2  UMETA(DisplayName = "RIGHT"),
+	UP = 3     UMETA(DisplayName = "UP")
+};
+
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class TRUDEMO_API UCameraPosition : public UActorComponent
@@ -20,12 +29,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Values")
 	FString stateLabel;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Main Connection")
-	int connectionInputDirection;
+	CameraDirection connectionInputDirection;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Main Connection")
 	AActor* connectedCameraPosition;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Runtime Connection List")
 	//UPROPERTY(meta=(HideInDetailPanel))
-	TMap< FString, UCameraPosition*> connectionsList;
+	TMap< CameraDirection, UCameraPosition*> connectionsList;
 
 protected:
 	// Called when the game starts
@@ -40,5 +49,5 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UFUNCTION(BlueprintCallable)
-	int bindPath(int dir, UCameraPosition* bindPos);
+	int bindPath(CameraDirection dir, UCameraPosition* bindPos);
 };
