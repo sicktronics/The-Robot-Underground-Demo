@@ -22,14 +22,16 @@ static T* GetComponentByClass(AActor* Actor)
 
 
 // Called when the game starts
-void UCameraPosition::BeginPlay()
-{
+void UCameraPosition::BeginPlay() {
 	Super::BeginPlay();
+}
+
+void UCameraPosition::InitConnections() {
 	if (IsValid(connectedCameraPosition)) {
-		
 		if (GetComponentByClass<UCameraPosition>(connectedCameraPosition)->bindPath(connectionInputDirection, this) == 0) {
 
-			bindPath(5 - connectionInputDirection, GetComponentByClass<UCameraPosition>(connectedCameraPosition));
+			bindPath((CameraDirection) (3 - (uint8)connectionInputDirection),
+				GetComponentByClass<UCameraPosition>(connectedCameraPosition));
 		}
 		else {
 			UE_LOG(LogTemp, Warning, TEXT("UCameraPosition could not be detecte on connectedCameraPosition"));
@@ -37,9 +39,7 @@ void UCameraPosition::BeginPlay()
 	} 
 	else {
 		UE_LOG(LogTemp, Warning, TEXT("connected Camera Position is null pointer: from CameraPosition %s"), *stateLabel);
-
 	}
-	
 }
 
 
@@ -51,15 +51,15 @@ void UCameraPosition::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 	// ...
 }
 
-int UCameraPosition::bindPath(int dir, UCameraPosition* bindPos) {
-	if (connectionsList.Contains(FString::FromInt(dir))) {
+int UCameraPosition::bindPath(CameraDirection dir, UCameraPosition* bindPos) {
+	if (connectionsList.Contains(dir)) {
 
 		UE_LOG(LogTemp, Warning, TEXT("Bind dir already bound. try a different one"));
 		return 1;
 
 	} else {
 		UE_LOG(LogTemp, Warning, TEXT("Bind attempted: %s to %s"), *stateLabel, *(bindPos->stateLabel));
-		connectionsList.Add(FString::FromInt(dir), bindPos);
+		connectionsList.Add(dir, bindPos);
 		return 0;
 	}
 }
