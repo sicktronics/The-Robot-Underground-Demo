@@ -10,6 +10,7 @@
 
 #include "Robot.generated.h"
 
+#define ROBOT_BUF_SIZE 255
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class TRUDEMO_API URobot : public UActorComponent
@@ -40,10 +41,16 @@ public:
 	int clawOne = 7;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Pin Numbers")
 	int clawTwo = 8;
-	UPROPERTY(VisibleAnywhere, Category = "Moter Speeds")
-	float driveLeftMult;
-	UPROPERTY(VisibleAnywhere, Category = "Moter Speeds")
-	float driveRightMult;
+
+	UPROPERTY(VisibleAnywhere, Category = "Motor Speeds")
+	float leftMotorSpeed;
+	UPROPERTY(VisibleAnywhere, Category = "Motor Speeds")
+	float rightMotorSpeed;
+
+	// circular buffers keeping the most recent samples
+	// tick acts as the head of this buffer (mod the buf length)
+	TArray<int32> lastLeftMults, lastRightMults;
+
 	UPROPERTY(VisibleAnywhere, Category = "Derived Data")
 	AActor* self;
 	UPROPERTY(VisibleAnywhere, Category = "Derived Data")
@@ -63,8 +70,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	FRotator GetMovementVector(float DeltaTime);
+
 	UFUNCTION(BlueprintCallable)
-	float ToSpeedDCMotor(int input, float avg);
+	void UpdateValues();
+	void UpdateMotorSpeed(int input, float& avg, TArray<int32>& prev);
 	UFUNCTION(BlueprintCallable)
 	float GetDriveSpeed(float DeltaTime);
 	UFUNCTION(BlueprintCallable)

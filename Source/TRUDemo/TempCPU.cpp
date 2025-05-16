@@ -98,3 +98,7 @@ int UTempCPU::GetPinData(int pinNum, int loc) {
 	UE_LOG(LogTemp, Warning, TEXT("CPU Sent value of %i"), r);
 	return r;
 }
+
+bool UTempCPU::IsValidTick(int tick) {
+	return tick >= 0 && tick < 255 * TIMEFRAME;
+}
