@@ -29,7 +29,7 @@ Follow us on [Instagram](https://www.instagram.com/therobotunderground/ "@therob
 
 ## About the Repository
 
-This project was built in Unreal Engine 5, meaning it's written in C++ and Blueprints (Unreal's visual programming language built on top of C++). We also plug in the [Arduino simulation library](https://github.com/sicktronics/avr8cpp "sim library") created by Parker as a static library. This needs to be compiled into a static `.lib` file separately and included into the project as an Unreal 3rd-Party Plugin.
+This project was built in Unreal Engine 5, meaning it's written in C++ and Blueprints (Unreal's visual programming language built on top of C++). We also plug in the [Arduino simulation library](https://github.com/sicktronics/avr8cpp "sim library") assembled by Parker (built off of [avr8js](https://github.com/wokwi/avr8js "avr8js")) as a static library. This needs to be compiled into a static `.lib` file separately and included into the project as an Unreal 3rd-Party Plugin.
 
 This repository is laid out similarly to most other Unreal projects. The `Content` folder contains all Unreal-generated assets, including all imported images/textures, UI elements, Blueprint actors, data tables, and levels (maps). The `Config` folder contains some engine configurations, and the `Source` folder contains all C++ source files. 
 
