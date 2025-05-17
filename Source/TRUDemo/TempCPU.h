@@ -46,4 +46,6 @@ public:
 	void LoadPinData();	
 	void SplitPinData();
 	int GetPinData(int pinNum, int loc);
+
+	bool IsValidTick(int tick);
 };
