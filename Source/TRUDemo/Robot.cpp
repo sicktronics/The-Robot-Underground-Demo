@@ -34,45 +34,33 @@ void URobot::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 	if (go) UpdateValues();
 }
 
-FRotator URobot::GetMovementVector(float DeltaTime) {
+FRotator URobot::GetMovementVector(float DeltaTime) const {
 	UTempCPU* cpu = UFunctions::GetComponentByClass<UTempCPU>(self);
 	if (go) {
 		float driveLeftMult = (cpu->GetPinData(leftForwardPin, tick) - cpu->GetPinData(leftBackwardPin, tick)) * leftMotorSpeed;
 		float driveRightMult = (cpu->GetPinData(rightForwardPin, tick) - cpu->GetPinData(rightBackwardPin, tick)) * rightMotorSpeed;
 
-		// UE_LOG(LogTemp, Warning, TEXT("Going with driveLeftMult of %f ..."), driveLeftMult);
-		// UE_LOG(LogTemp, Warning, TEXT("Going with driveRightMult of %f ..."), driveRightMult);
-
 		float deltaPos = (driveLeftMult + driveRightMult) / 2;
-		float deltaRot = FMath::Atan((driveRightMult - driveLeftMult) / robotWidth);
+		float deltaRot = moveSpeed*(driveLeftMult - driveRightMult)/robotWidth;
 
-		return initRotation + FRotator(0, deltaRot * DeltaTime, 0);
-		//return self->GetActorLocation() + (deltaPos * moveSpeed * DeltaTime) * self->GetActorForwardVector();
+		return FRotator(0, deltaRot * DeltaTime, 0);
 		
 	}
 	else {
-		return initRotation;
+		return FRotator(0, 0, 0);
 	}
 }
 
-float URobot::GetDriveSpeed(float DeltaTime)
-{
+float URobot::GetDriveSpeed(float DeltaTime) const {
 	UTempCPU* cpu = UFunctions::GetComponentByClass<UTempCPU>(self);
 	if (go) {
 		float driveLeftMult = (cpu->GetPinData(leftForwardPin, tick) - cpu->GetPinData(leftBackwardPin, tick)) * leftMotorSpeed;
 		float driveRightMult = (cpu->GetPinData(rightForwardPin, tick) - cpu->GetPinData(rightBackwardPin, tick)) * rightMotorSpeed;
 
-		//UE_LOG(LogTemp, Warning, TEXT("Going with driveLeftMult of %f ..."), driveLeftMult);
-		//UE_LOG(LogTemp, Warning, TEXT("Going with driveRightMult of %f ..."), driveRightMult);
-
 		float deltaPos = (driveLeftMult + driveRightMult) / 2;
 		float deltaRot = FMath::Atan((driveRightMult - driveLeftMult) / robotWidth);
-
-		//return self->GetActorRotation() + FRotator(0, deltaRot * DeltaTime, 0);
 		
-		float result = (float)(deltaPos * moveSpeed);
-		//UE_LOG(LogTemp, Warning, TEXT("%f"), result);
-		return result;
+		return (float)(deltaPos * moveSpeed);
 		
 	} else
 	{
@@ -88,7 +76,7 @@ void URobot::UpdateValues() {
 	UpdateMotorSpeed(cpu->GetPinData(driveRightPin, tick), rightMotorSpeed, lastRightMults);
 }
 
-void URobot::UpdateMotorSpeed(int input, float& avg, TArray<int32>& prev) {
+void URobot::UpdateMotorSpeed(int input, float& avg, TArray<int32>& prev) const {
 	if (input > 1) input = 1;
 	if (input < 0) input = 0;
 
@@ -104,4 +92,25 @@ void URobot::SetGo() {
 
 	tick = 0;
 	go = true;
+}
+
+void URobot::DebugPrint() const {
+	if (!go) {
+		UE_LOG(LogTemp, Warning, TEXT("setGo = false"));
+		return;
+	}
+
+	UTempCPU* cpu = UFunctions::GetComponentByClass<UTempCPU>(self);
+	float driveLeftMult = (cpu->GetPinData(leftForwardPin, tick) - cpu->GetPinData(leftBackwardPin, tick)) * leftMotorSpeed;
+	float driveRightMult = (cpu->GetPinData(rightForwardPin, tick) - cpu->GetPinData(rightBackwardPin, tick)) * rightMotorSpeed;
+
+	float deltaPos = (driveLeftMult + driveRightMult) / 2;
+	float deltaRot = moveSpeed*(driveLeftMult - driveRightMult)/robotWidth;
+
+	UE_LOG(LogTemp, Warning, TEXT("driveLeftMult = %f, driveRightMult = %f"), driveLeftMult, driveRightMult);
+	UE_LOG(LogTemp, Warning, TEXT("deltaPos = %f, deltaRot = %f"), deltaPos, deltaRot);
+	
+	UE_LOG(LogTemp, Warning, TEXT("actorLoc = <%f, %f, %f>, forwardVec = <%f, %f, %f>"),
+		self->GetActorLocation().X, self->GetActorLocation().Y, self->GetActorLocation().Z,
+		self->GetActorRotation().Pitch, self->GetActorRotation().Yaw, self->GetActorRotation().Roll);
 }

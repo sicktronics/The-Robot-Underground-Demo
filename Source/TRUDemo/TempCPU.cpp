@@ -95,7 +95,7 @@ int UTempCPU::GetPinData(int pinNum, int loc) {
 	{
 		r = p[loc] - '0';
 	} else r = 0;
-	UE_LOG(LogTemp, Warning, TEXT("CPU Sent value of %i"), r);
+	//UE_LOG(LogTemp, Warning, TEXT("CPU Sent value of %i"), r);
 	return r;
 }
 
