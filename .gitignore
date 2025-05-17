@@ -15,6 +15,7 @@
 
 # compiled stuff we probably don't want
 *.lib
+!Plugins/LEDBlinkTest/Source/ThirdParty/Win64LEDBlinkTest1/lib/build/Win64ReleaseLEDBlinkTest1.lib
 *.dll
 *.lai
 *.la
