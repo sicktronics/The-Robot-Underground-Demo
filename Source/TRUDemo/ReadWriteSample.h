@@ -51,34 +51,35 @@ class TRUDEMO_API UReadWriteSample : public UBlueprintFunctionLibrary
 
 		static void PrintVarArray(const TArray<TArray<FString>>& VarArray);
 
-		static void PinMode(TArray<FString>& Para, TArray<int32>& pinActive, TArray<TArray<FString>>& VarStack, FString& compileMessage);
+		static void PinMode(TArray<FString>& Para, TArray<int32>& pinActive, TArray<TArray<FString>>& VarStack, TArray<int32>& VarScope, int32& CurrentScope, FString& compileMessage);
 
-		static void AnalogWrite(TArray<FString>& Para, TArray<int32>& pinSpeed, TArray<TArray<FString>>& VarStack, TArray<int32>& pinStatus, FString& compileMessage);
+		static void AnalogWrite(TArray<FString>& Para, TArray<int32>& pinSpeed, TArray<TArray<FString>>& VarStack, TArray<int32>& VarScope, int32& CurrentScope,TArray<int32>& pinStatus, FString& compileMessage);
 
-		static void DigitalWrite(TArray<FString>& Para, TArray<int32>& pinStatus, TArray<TArray<FString>>& VarStack, TArray<int32>& pinSpeed, FString& compileMessage);
+		static void DigitalWrite(TArray<FString>& Para, TArray<int32>& pinStatus, TArray<TArray<FString>>& VarStack, TArray<int32>& VarScope, int32& CurrentScope, TArray<int32>& pinSpeed, FString& compileMessage);
 
 		static void Delay(TArray<FString>& Para, int32& Time, int32& TickCount, 
 			TArray<int32>& PinStatus,TArray<FString>& Signal, TArray<FString>& SignalBits, TArray<int32>& PinSpeed, 
-			TArray<int32>& PinActive, TArray<TArray<FString>>& VarStack, FString& compileMessage);
+			TArray<int32>& PinActive, TArray<TArray<FString>>& VarStack, TArray<int32>& VarScope, int32& CurrentScope, FString& compileMessage);
 
 		static void ParseFunction(const TArray<FString>& Command, TMap<FString, TArray<FString>>& FunctionDict, 
-			TArray<TArray<FString>>& VarStack, FString& compileMessage);
+			TArray<TArray<FString>>& VarStack, TArray<int32>& VarScope, int32& CurrentScope,FString& compileMessage);
 		
-		static void PushVar(const FString& Command, TArray<TArray<FString>>& VarStack, FString& compileMessage);
+		static void PushVar(const FString& Command, TArray<TArray<FString>>& VarStack, TArray<int32>& VarScope, int32& CurrentScope,FString& compileMessage);
 
-		static void PopVar(int& VarCount, TArray<TArray<FString>>& VarStack);
+		static void PopVar(int& VarCount, TArray<TArray<FString>>& VarStack, TArray<int32>& VarScope);
 
 		static void CallFunction(const FString& FunctionNameIn, TMap<FString, TArray<FString>>& FunctionDict,
-			TArray<TArray<FString>>& VarStack, int32& Time, int32& TickCount, TArray<int32>& PinStatus,TArray<FString>& Signal, 
-			TArray<FString>& SignalBits, TArray<int32>& PinSpeed, TArray<int32>& PinActive, FString& compileMessage);
+			TArray<TArray<FString>>& VarStack, TArray<int32>& VarScope, int32& CurrentScope, int32& Time, int32& TickCount, 
+			TArray<int32>& PinStatus,TArray<FString>& Signal,TArray<FString>& SignalBits, 
+			TArray<int32>& PinSpeed, TArray<int32>& PinActive, FString& compileMessage);
 
-		static FString GetVar(FString& VarName, TArray<TArray<FString>>& VarStack, FString& compileMessage);
+		static FString GetVar(FString& VarName, TArray<TArray<FString>>& VarStack, TArray<int32>& VarScope, int32& CurrentScope, FString& compileMessage);
 
-		static int32 FindVar(const FString& VarName, TArray<TArray<FString>>& VarStack, FString& compileMessage);
+		static int32 FindVar(const FString& VarName, TArray<TArray<FString>>& VarStack, TArray<int32>& VarScope, int32& CurrentScope, FString& compileMessage);
 
-		static void ChangeVar(const FString& VarName, const FString& VarVal, TArray<TArray<FString>>& VarStack, FString& compileMessage);
+		static void ChangeVar(const FString& VarName, const FString& VarVal, TArray<TArray<FString>>& VarStack, TArray<int32>& VarScope, int32& CurrentScope, FString& compileMessage);
 
-		static FString MathOp(FString& VarName, TArray<TArray<FString>>& VarStack, FString& compileMessage);
+		static FString MathOp(FString& VarName, TArray<TArray<FString>>& VarStack, TArray<int32>& VarScope, int32& CurrentScope, FString& compileMessage);
 
 		static TArray<FString> SplitMathOp(const FString& InString);
 	GENERATED_BODY()

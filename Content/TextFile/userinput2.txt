@@ -17,8 +17,8 @@ void driveForward(int time);
 void driveBackward(int time);
 void turnLeft(int time);
 void turnRight(int time);
-
-
+void testScope();
+int time = 3000;
 void setup() {
 
   pinMode(leftBackward, OUTPUT);
@@ -27,17 +27,36 @@ void setup() {
   pinMode(rightForward, OUTPUT);
   pinMode(rightBackward, OUTPUT);
   pinMode(rightPWM, OUTPUT);
-  int driveTime = 1000+1000;
-  driveForward(driveTime);
-delay(1000);
-  driveForward(driveTime-1000);
+  int driveTime = 1000;
+  int time = 2000;
+  testScope();
  
 }
 
 void loop() {
 
 }
+void testScope(){
+  //This goes forward using local variable for 2000/3000
+  digitalWrite(leftForward, HIGH);
+  digitalWrite(leftBackward, LOW);
+  digitalWrite(rightForward, HIGH);
+  digitalWrite(rightBackward, LOW);
 
+  // PWM VALUE CORRESPONDS TO SPEED (0-255)
+  analogWrite(leftPWM, speed);
+  analogWrite(rightPWM, speed);
+
+  // DELAY IN MS
+  delay(time);
+
+  // ALWAYS END WITH PWM WRITTEN TO ZERO
+  analogWrite(leftPWM, 0);
+  analogWrite(rightPWM, 0);
+
+
+
+}
 void driveForward(int time){
   // FORWARD PINS HIGH, BACKWARD LOW
   digitalWrite(leftForward, HIGH);

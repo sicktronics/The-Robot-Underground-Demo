@@ -29,9 +29,6 @@ void setup() {
   pinMode(rightPWM, OUTPUT);
   int driveTime = 1000;
   driveForward(driveTime);
-delay(1000);
-  driveForward(driveTime+1000);
-delay(1000*2);
  
 }
 
