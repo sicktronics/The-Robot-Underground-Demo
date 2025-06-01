@@ -89,6 +89,8 @@ void URobot::SetGo() {
 
 	lastLeftMults.Init(0, 255);
 	lastRightMults.Init(0, 255);
+	
+	UFunctions::GetComponentByClass<UTempCPU>(self)->LoadPinData();	
 
 	tick = 0;
 	go = true;
