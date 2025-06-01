@@ -3,7 +3,7 @@
 
 #include "TempCPU.h"
 
-int TIMEFRAME = 5;
+int TIMEFRAME = 120;
 
 // Sets default values for this component's properties
 UTempCPU::UTempCPU()
