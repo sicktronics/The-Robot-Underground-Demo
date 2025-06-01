@@ -31,6 +31,8 @@ The game itself revolves around wiring and coding a robot to solve various chall
 - While the demo needs a little more setup and stabilization before formally opening the doors to community contributions, we'd love to hear from ya! Feel free to make a PR anyway or shoot us an email at therobotunderground at gmail dot com.
 - More coming soon...
 
+## [Click Here for Technical Documentation!](https://drive.google.com/drive/folders/1OcQltwIPNhJ8WmkRLdahyeRTqBaKapEp?usp=sharing "Techincal Docs")
+
 ## Troubleshooting/Disclaimer
 - Unreal can be a pain in the bot when it comes to reliably buiding and launching larger projects
 - We highly recommend, in order to avoid Blueprints breaking or other unforseen bugs, to build the project from your IDE (see *Setup Instructions* above) instead of launching from the Unreal Editor.
