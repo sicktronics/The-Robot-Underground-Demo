@@ -55,7 +55,7 @@ public:
 	AActor* self;
 	UPROPERTY(VisibleAnywhere, Category = "Derived Data")
 	int tick = 0;
-	UPROPERTY(VisibleAnywhere, Category = "Derived Data")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Derived Data")
 	bool go = false;
 	UPROPERTY(VisibleAnywhere, Category = "Derived Data")
 	FRotator initRotation;
