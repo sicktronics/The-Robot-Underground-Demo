@@ -21,7 +21,6 @@ void UTempCPU::BeginPlay()
 {
 	Super::BeginPlay();
 	pins.Init("", 20);
-	LoadPinData();
 }
 
 
