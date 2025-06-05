@@ -1,0 +1,19 @@
+// Testing out the microcontroller's built-in LED, connected to pin 13...
+// Always test your board before wiring your robot. Good luck! - Jefe
+
+// Runs once - configure your pin
+void setup(){
+    pinMode(LED_BUILTIN, OUTPUT);
+}
+
+// Runs repeatedly
+void loop(){
+    // Turn LED on
+    digitalWrite(LED_BUILTIN, HIGH);
+    // Wait for half a second (500 ms)
+    delay(500);
+    // Turn LED off
+    digitalWrite(LED_BUILTIN, LOW);
+    // Wait for half a second (500 ms)
+    delay(500);
+}
