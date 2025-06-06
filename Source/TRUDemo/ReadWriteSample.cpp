@@ -153,6 +153,9 @@ FString UReadWriteSample::WriteToFile(FString content) {
     CurrentScope++;
     CallFunction(TEXT("setup"), FunctionDict, VarStack, VarScope, CurrentScope, Time, TickCount, pinStatus,
         signalResult, signalBits, pinSpeed, pinActive, complieMessage);
+    if (TickCount > 0) {
+        ProgressTick(Time, TickCount, pinStatus, signalResult, signalBits, pinSpeed, pinActive);
+    }
     FString input = "";
     for (const FString& Line : signalResult) {
         input += Line + LINE_TERMINATOR;
